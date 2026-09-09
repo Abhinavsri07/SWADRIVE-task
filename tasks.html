@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tasks Management - Attendance &amp; Task Distribution</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <div id="toast-container"></div>
+  <div class="sidebar-backdrop"></div>
+
+  <div class="app-layout">
+    <!-- Sidebar -->
+    <aside class="app-sidebar">
+      <div class="sidebar-header">
+        <a href="index.html" class="sidebar-brand">
+          <span style="width: 28px; height: 28px; border-radius: var(--radius-sm); background: var(--color-primary); color: white; display: flex; align-items: center; justify-content: center;">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/><path d="m9 16 2 2 4-4"/></svg>
+          </span>
+          <span>TaskFlow</span>
+          <span class="brand-badge" id="sidebarRoleTag">Portal</span>
+        </a>
+      </div>
+
+      <nav class="sidebar-nav">
+        <div class="nav-section-title">Navigation</div>
+        <a href="admin.html" class="nav-item" id="navDashboardLink">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+          <span>Dashboard</span>
+        </a>
+        <a href="attendance.html" class="nav-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          <span>Daily Attendance</span>
+        </a>
+        <a href="weekly-attendance.html" class="nav-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+          <span>Weekly Matrix</span>
+        </a>
+        <a href="tasks.html" class="nav-item active">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+          <span>Tasks Management</span>
+        </a>
+        <a href="reports.html" class="nav-item" id="navReportsLink">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+          <span>Reports &amp; Export</span>
+        </a>
+        <div class="nav-section-title">Settings</div>
+        <a href="profile.html" class="nav-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          <span>My Profile</span>
+        </a>
+      </nav>
+
+      <div class="sidebar-footer">
+        <div class="sidebar-user-card">
+          <div class="user-avatar" data-user-avatar>U</div>
+          <div class="user-details">
+            <div class="user-name" data-user-name>User Name</div>
+            <div class="user-role-badge" data-user-role>ROLE</div>
+          </div>
+        </div>
+        <button type="button" class="btn btn-secondary btn-sm" id="logoutBtn" style="width: 100%; justify-content: flex-start; background: rgba(255,255,255,0.05); color: #e2e8f0; border: none;">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+          <span>Sign Out</span>
+        </button>
+      </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <div class="app-main">
+      <header class="app-header">
+        <div class="header-left">
+          <button type="button" class="sidebar-toggle-btn" aria-label="Toggle Sidebar">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+          </button>
+          <div class="page-title-wrap">
+            <h1 class="page-heading">Tasks &amp; Distribution</h1>
+            <span class="page-subheading">Track lifecycle: ASSIGNED &rarr; IN PROGRESS &rarr; SUBMITTED &rarr; COMPLETED</span>
+          </div>
+        </div>
+
+        <div class="header-right">
+          <!-- Notification Bell -->
+          <div class="notif-bell-container">
+            <button class="icon-btn" id="notifBellBtn" aria-label="Notifications">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>
+              <span class="notif-badge" id="notifBadge" style="display: none;">0</span>
+            </button>
+            <div class="dropdown-menu" id="notifDropdown">
+              <div class="dropdown-header">
+                <span>Notifications</span>
+              </div>
+              <div class="dropdown-body" id="notifList">
+                <div style="padding: 1rem; text-align: center; color: var(--color-slate-400); font-size: 0.85rem;">No notifications</div>
+              </div>
+            </div>
+          </div>
+
+          <button class="btn btn-primary btn-sm" id="btnOpenCreateModal" style="display: none;">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            <span>Create Task</span>
+          </button>
+        </div>
+      </header>
+
+      <main class="page-container">
+        <!-- Status Tabs Bar -->
+        <div class="filter-bar" style="background: white; border-radius: var(--radius-lg); padding: 0.75rem 1.25rem;">
+          <div class="filter-group" style="flex-wrap: wrap; gap: 0.5rem;" id="statusFilterTabs">
+            <button type="button" class="btn btn-primary btn-sm tab-btn" data-status="ALL">All Tasks</button>
+            <button type="button" class="btn btn-secondary btn-sm tab-btn" data-status="ASSIGNED">Assigned</button>
+            <button type="button" class="btn btn-secondary btn-sm tab-btn" data-status="IN PROGRESS">In Progress</button>
+            <button type="button" class="btn btn-secondary btn-sm tab-btn" data-status="SUBMITTED">Submitted (Review)</button>
+            <button type="button" class="btn btn-secondary btn-sm tab-btn" data-status="COMPLETED">Completed</button>
+            <button type="button" class="btn btn-secondary btn-sm tab-btn" data-status="REJECTED">Needs Revision</button>
+          </div>
+
+          <div class="filter-group">
+            <select id="priorityFilterSelect" class="form-select" style="min-width: 140px;">
+              <option value="ALL">All Priorities</option>
+              <option value="High">High Priority</option>
+              <option value="Medium">Medium Priority</option>
+              <option value="Low">Low Priority</option>
+            </select>
+
+            <div class="search-input-wrap">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+              <input type="text" id="taskSearchInput" placeholder="Search tasks..." />
+            </div>
+          </div>
+        </div>
+
+        <!-- Task List Card -->
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--color-primary)" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+              <span>Tasks Directory</span>
+            </div>
+            <span id="taskCountLabel" style="font-size: 0.85rem; color: var(--color-slate-500);">0 task(s)</span>
+          </div>
+
+          <div class="card-body" style="padding: 0;">
+            <div class="table-responsive">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Task Title &amp; Details</th>
+                    <th>Assigned To</th>
+                    <th>Priority</th>
+                    <th>Deadline</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="tasksTableBody">
+                  <tr><td colspan="6" style="text-align: center; padding: 2.5rem; color: var(--color-slate-400);">Loading tasks...</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <!-- Create Task Modal -->
+  <div class="modal-backdrop" id="createTaskModal">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <h3 class="modal-title">Create New Task</h3>
+        <button type="button" class="modal-close" id="closeCreateModalBtn">&times;</button>
+      </div>
+      <form id="createTaskForm">
+        <div class="modal-body">
+          <div class="form-group">
+            <label class="form-label" for="taskTitle">Task Title *</label>
+            <input type="text" id="taskTitle" class="form-input" style="width: 100%;" placeholder="e.g. Implement Responsive Weekly Matrix Table" required />
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="taskDescription">Task Description *</label>
+            <textarea id="taskDescription" class="form-input" style="width: 100%; min-height: 90px; resize: vertical;" placeholder="Include instructions, requirements, deliverables, and guidelines..." required></textarea>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label" for="taskAssignedTo">Assign To Member *</label>
+              <select id="taskAssignedTo" class="form-select" style="width: 100%;" required>
+                <option value="">Loading members...</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="taskPriority">Priority</label>
+              <select id="taskPriority" class="form-select" style="width: 100%;">
+                <option value="Low">Low</option>
+                <option value="Medium" selected>Medium</option>
+                <option value="High">High</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="taskDeadline">Deadline *</label>
+            <input type="date" id="taskDeadline" class="form-input" style="width: 100%;" required />
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" id="cancelCreateModalBtn">Cancel</button>
+          <button type="submit" class="btn btn-primary" id="submitCreateTaskBtn">Create &amp; Assign Task</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script type="module">
+    import { initAuthGuard } from "./js/auth.js";
+    import { 
+      getAllTasks, 
+      getMemberTasks, 
+      createTask, 
+      deleteTask, 
+      startTask, 
+      TASK_STATUS 
+    } from "./js/tasks.js";
+    import { getAllMembers } from "./js/attendance.js";
+    import { showToast } from "./js/firebase-config.js";
+
+    let currentUser = null;
+    let allTasks = [];
+    let activeStatusFilter = "ALL";
+    let activePriorityFilter = "ALL";
+    let activeSearchQuery = "";
+
+    (async () => {
+      const profile = await initAuthGuard(["admin", "member"]);
+      if (profile) {
+        currentUser = profile;
+
+        const navDashboard = document.getElementById("navDashboardLink");
+        const navReports = document.getElementById("navReportsLink");
+        const sidebarRoleTag = document.getElementById("sidebarRoleTag");
+        const btnOpenCreate = document.getElementById("btnOpenCreateModal");
+
+        if (profile.role === "admin") {
+          navDashboard.href = "admin.html";
+          sidebarRoleTag.textContent = "ADMIN";
+          sidebarRoleTag.style.background = "var(--color-primary)";
+          btnOpenCreate.style.display = "inline-flex";
+        } else {
+          navDashboard.href = "member.html";
+          sidebarRoleTag.textContent = "MEMBER";
+          sidebarRoleTag.style.background = "var(--color-present)";
+          if (navReports) navReports.style.display = "none";
+        }
+
+        // Check URL query parameters for pre-selected status filter
+        const urlParams = new URLSearchParams(window.location.search);
+        const urlStatus = urlParams.get("status");
+        if (urlStatus) {
+          activeStatusFilter = urlStatus;
+          document.querySelectorAll(".tab-btn").forEach(btn => {
+            if (btn.dataset.status === urlStatus) {
+              btn.classList.remove("btn-secondary");
+              btn.classList.add("btn-primary");
+            } else {
+              btn.classList.remove("btn-primary");
+              btn.classList.add("btn-secondary");
+            }
+          });
+        }
+
+        await loadTasks();
+        setupModal();
+      }
+    })();
+
+    // Status Tabs Listener
+    document.querySelectorAll(".tab-btn").forEach(btn => {
+      btn.addEventListener("click", () => {
+        document.querySelectorAll(".tab-btn").forEach(b => {
+          b.classList.remove("btn-primary");
+          b.classList.add("btn-secondary");
+        });
+        btn.classList.remove("btn-secondary");
+        btn.classList.add("btn-primary");
+        activeStatusFilter = btn.dataset.status;
+        renderTasks();
+      });
+    });
+
+    // Priority Filter
+    document.getElementById("priorityFilterSelect").addEventListener("change", (e) => {
+      activePriorityFilter = e.target.value;
+      renderTasks();
+    });
+
+    // Search input
+    document.getElementById("taskSearchInput").addEventListener("input", (e) => {
+      activeSearchQuery = e.target.value.toLowerCase().trim();
+      renderTasks();
+    });
+
+    async function loadTasks() {
+      if (currentUser.role === "admin") {
+        allTasks = await getAllTasks();
+      } else {
+        allTasks = await getMemberTasks(currentUser.uid, currentUser.internId);
+      }
+      renderTasks();
+    }
+
+    function renderTasks() {
+      const tbody = document.getElementById("tasksTableBody");
+      let filtered = allTasks;
+
+      // Status Filter
+      if (activeStatusFilter !== "ALL") {
+        filtered = filtered.filter(t => t.status === activeStatusFilter);
+      }
+
+      // Priority Filter
+      if (activePriorityFilter !== "ALL") {
+        filtered = filtered.filter(t => t.priority === activePriorityFilter);
+      }
+
+      // Search Filter
+      if (activeSearchQuery) {
+        filtered = filtered.filter(t => 
+          (t.title && t.title.toLowerCase().includes(activeSearchQuery)) ||
+          (t.description && t.description.toLowerCase().includes(activeSearchQuery)) ||
+          (t.assignedToName && t.assignedToName.toLowerCase().includes(activeSearchQuery))
+        );
+      }
+
+      document.getElementById("taskCountLabel").textContent = `${filtered.length} task(s)`;
+
+      if (filtered.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="6" style="text-align: center; padding: 2.5rem; color: var(--color-slate-400);">No tasks found matching your filters.</td></tr>`;
+        return;
+      }
+
+      tbody.innerHTML = filtered.map(t => {
+        let statusBadgeClass = "badge-assigned";
+        if (t.status === TASK_STATUS.IN_PROGRESS) statusBadgeClass = "badge-inprogress";
+        else if (t.status === TASK_STATUS.SUBMITTED) statusBadgeClass = "badge-submitted";
+        else if (t.status === TASK_STATUS.COMPLETED) statusBadgeClass = "badge-completed";
+        else if (t.status === TASK_STATUS.REJECTED) statusBadgeClass = "badge-rejected";
+
+        const isAdmin = currentUser && currentUser.role === "admin";
+        let actionButtons = "";
+
+        if (isAdmin) {
+          actionButtons = `
+            <div style="display: flex; gap: 0.35rem; align-items: center;">
+              <a href="task-details.html?id=${t.id}" class="btn btn-primary btn-sm">
+                ${t.status === 'SUBMITTED' ? 'Review &amp; Approve' : 'Details'}
+              </a>
+              <button class="btn btn-secondary btn-sm delete-task-btn" data-id="${t.id}" title="Delete Task" style="color: var(--color-absent); padding: 0.35rem 0.6rem;">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+              </button>
+            </div>
+          `;
+        } else {
+          // Member actions
+          if (t.status === TASK_STATUS.ASSIGNED) {
+            actionButtons = `
+              <div style="display: flex; gap: 0.35rem;">
+                <button class="btn btn-primary btn-sm start-task-btn" data-id="${t.id}">Start Task</button>
+                <a href="task-details.html?id=${t.id}" class="btn btn-secondary btn-sm">Details</a>
+              </div>
+            `;
+          } else if (t.status === TASK_STATUS.IN_PROGRESS || t.status === TASK_STATUS.REJECTED) {
+            actionButtons = `
+              <a href="task-details.html?id=${t.id}" class="btn btn-primary btn-sm">
+                ${t.status === TASK_STATUS.REJECTED ? 'Resubmit Work' : 'Submit Work'}
+              </a>
+            `;
+          } else {
+            actionButtons = `
+              <a href="task-details.html?id=${t.id}" class="btn btn-secondary btn-sm">View Submission</a>
+            `;
+          }
+        }
+
+        return `
+          <tr>
+            <td>
+              <a href="task-details.html?id=${t.id}" style="font-weight: 600; color: var(--color-slate-800); text-decoration: none;">
+                ${t.title}
+              </a>
+              <div style="font-size: 0.75rem; color: var(--color-slate-500); max-width: 320px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; margin-top: 0.15rem;">
+                ${t.description}
+              </div>
+            </td>
+            <td>
+              <div style="font-weight: 500; font-size: 0.85rem;">${t.assignedToName || t.assignedToEmail || "-"}</div>
+              <div style="font-size: 0.75rem; color: var(--color-slate-400);">${t.assignedToEmail || ""}</div>
+            </td>
+            <td><span class="priority-${(t.priority || 'medium').toLowerCase()}">${t.priority || 'Medium'}</span></td>
+            <td><strong>${t.deadline || "-"}</strong></td>
+            <td><span class="badge ${statusBadgeClass}">${t.status}</span></td>
+            <td>${actionButtons}</td>
+          </tr>
+        `;
+      }).join("");
+
+      // Attach Delete Handlers
+      tbody.querySelectorAll(".delete-task-btn").forEach(btn => {
+        btn.addEventListener("click", async () => {
+          const taskId = btn.dataset.id;
+          if (confirm("Are you sure you want to permanently delete this task?")) {
+            btn.disabled = true;
+            const res = await deleteTask(taskId);
+            if (res.success) {
+              await loadTasks();
+            } else {
+              btn.disabled = false;
+            }
+          }
+        });
+      });
+
+      // Attach Start Task Handlers
+      tbody.querySelectorAll(".start-task-btn").forEach(btn => {
+        btn.addEventListener("click", async () => {
+          const taskId = btn.dataset.id;
+          btn.disabled = true;
+          const res = await startTask(taskId, TASK_STATUS.ASSIGNED);
+          if (res.success) {
+            await loadTasks();
+          } else {
+            btn.disabled = false;
+          }
+        });
+      });
+    }
+
+    function setupModal() {
+      const modal = document.getElementById("createTaskModal");
+      const openBtn = document.getElementById("btnOpenCreateModal");
+      const closeBtn = document.getElementById("closeCreateModalBtn");
+      const cancelBtn = document.getElementById("cancelCreateModalBtn");
+      const form = document.getElementById("createTaskForm");
+      const memberSelect = document.getElementById("taskAssignedTo");
+      const deadlineInput = document.getElementById("taskDeadline");
+
+      const tomorrow = new Date();
+      tomorrow.setDate(tomorrow.getDate() + 2);
+      deadlineInput.value = tomorrow.toISOString().split("T")[0];
+
+      if (openBtn) {
+        openBtn.addEventListener("click", async () => {
+          memberSelect.innerHTML = `<option value="">Loading members...</option>`;
+          const members = await getAllMembers();
+          if (members.length === 0) {
+            memberSelect.innerHTML = `<option value="">No members available</option>`;
+          } else {
+            memberSelect.innerHTML = members.map(m => `
+              <option value="${m.id || m.uid}" data-intern-id="${m.internId || m.name || m.id}" data-name="${m.internId || m.name || m.email}" data-email="${m.email || ''}">
+                ${m.internId || m.name || m.email} (${m.role})
+              </option>
+            `).join("");
+          }
+          modal.classList.add("show");
+        });
+      }
+
+      [closeBtn, cancelBtn].forEach(btn => {
+        if (btn) {
+          btn.addEventListener("click", () => modal.classList.remove("show"));
+        }
+      });
+
+      if (form) {
+        form.addEventListener("submit", async (e) => {
+          e.preventDefault();
+          const title = document.getElementById("taskTitle").value.trim();
+          const description = document.getElementById("taskDescription").value.trim();
+          const assignedTo = memberSelect.value;
+          const selectedOption = memberSelect.options[memberSelect.selectedIndex];
+          const assignedToInternId = selectedOption ? selectedOption.dataset.internId : "";
+          const assignedToName = selectedOption ? selectedOption.dataset.name : "";
+          const assignedToEmail = selectedOption ? selectedOption.dataset.email : "";
+          const priority = document.getElementById("taskPriority").value;
+          const deadline = deadlineInput.value;
+
+          const submitBtn = document.getElementById("submitCreateTaskBtn");
+          submitBtn.disabled = true;
+          submitBtn.textContent = "Creating...";
+
+          const res = await createTask({
+            title,
+            description,
+            assignedTo,
+            assignedToInternId,
+            assignedToName: assignedToInternId || assignedToName || "Intern",
+            assignedToEmail,
+            priority,
+            deadline
+          }, currentUser);
+
+          submitBtn.disabled = false;
+          submitBtn.textContent = "Create & Assign Task";
+
+          if (res.success) {
+            form.reset();
+            modal.classList.remove("show");
+            await loadTasks();
+          }
+        });
+      }
+    }
+  </script>
+</body>
+</html>

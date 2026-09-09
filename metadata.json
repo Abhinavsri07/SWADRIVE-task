@@ -1,0 +1,6 @@
+{
+  "name": "Attendance & Task Distribution Management",
+  "description": "Attendance and task distribution management system with role-based access for Admins and Members.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

@@ -1,0 +1,666 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Task Details &amp; Submission - Attendance &amp; Task Distribution</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <div id="toast-container"></div>
+  <div class="sidebar-backdrop"></div>
+
+  <div class="app-layout">
+    <!-- Sidebar -->
+    <aside class="app-sidebar">
+      <div class="sidebar-header">
+        <a href="index.html" class="sidebar-brand">
+          <span style="width: 28px; height: 28px; border-radius: var(--radius-sm); background: var(--color-primary); color: white; display: flex; align-items: center; justify-content: center;">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/><path d="m9 16 2 2 4-4"/></svg>
+          </span>
+          <span>TaskFlow</span>
+          <span class="brand-badge" id="sidebarRoleTag">Portal</span>
+        </a>
+      </div>
+
+      <nav class="sidebar-nav">
+        <div class="nav-section-title">Navigation</div>
+        <a href="admin.html" class="nav-item" id="navDashboardLink">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+          <span>Dashboard</span>
+        </a>
+        <a href="attendance.html" class="nav-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          <span>Daily Attendance</span>
+        </a>
+        <a href="weekly-attendance.html" class="nav-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+          <span>Weekly Matrix</span>
+        </a>
+        <a href="tasks.html" class="nav-item active">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+          <span>Tasks Management</span>
+        </a>
+        <a href="reports.html" class="nav-item" id="navReportsLink">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+          <span>Reports &amp; Export</span>
+        </a>
+        <div class="nav-section-title">Settings</div>
+        <a href="profile.html" class="nav-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          <span>My Profile</span>
+        </a>
+      </nav>
+
+      <div class="sidebar-footer">
+        <div class="sidebar-user-card">
+          <div class="user-avatar" data-user-avatar>U</div>
+          <div class="user-details">
+            <div class="user-name" data-user-name>User Name</div>
+            <div class="user-role-badge" data-user-role>ROLE</div>
+          </div>
+        </div>
+        <button type="button" class="btn btn-secondary btn-sm" id="logoutBtn" style="width: 100%; justify-content: flex-start; background: rgba(255,255,255,0.05); color: #e2e8f0; border: none;">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+          <span>Sign Out</span>
+        </button>
+      </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <div class="app-main">
+      <header class="app-header">
+        <div class="header-left">
+          <button type="button" class="sidebar-toggle-btn" aria-label="Toggle Sidebar">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+          </button>
+          <div class="page-title-wrap">
+            <div style="display: flex; align-items: center; gap: 0.5rem;">
+              <a href="tasks.html" style="color: var(--color-slate-400); text-decoration: none; font-size: 0.85rem;">&larr; Back to Tasks</a>
+            </div>
+            <h1 class="page-heading" id="headerTaskTitle">Task Overview</h1>
+          </div>
+        </div>
+
+        <div class="header-right">
+          <span id="taskHeaderStatusBadge" class="badge badge-assigned">ASSIGNED</span>
+        </div>
+      </header>
+
+      <main class="page-container" style="max-width: 1000px;">
+        <!-- Status Stepper Bar -->
+        <div class="card" style="margin-bottom: 1.5rem; padding: 1.25rem 1.5rem;">
+          <div style="display: flex; align-items: center; justify-content: space-between; position: relative;">
+            <!-- Step 1: ASSIGNED -->
+            <div class="stepper-step" id="stepAssigned">
+              <div class="stepper-circle">1</div>
+              <span class="stepper-label">ASSIGNED</span>
+            </div>
+            <div class="stepper-line" id="line1"></div>
+
+            <!-- Step 2: IN PROGRESS -->
+            <div class="stepper-step" id="stepInProgress">
+              <div class="stepper-circle">2</div>
+              <span class="stepper-label">IN PROGRESS</span>
+            </div>
+            <div class="stepper-line" id="line2"></div>
+
+            <!-- Step 3: SUBMITTED -->
+            <div class="stepper-step" id="stepSubmitted">
+              <div class="stepper-circle">3</div>
+              <span class="stepper-label">SUBMITTED</span>
+            </div>
+            <div class="stepper-line" id="line3"></div>
+
+            <!-- Step 4: COMPLETED -->
+            <div class="stepper-step" id="stepCompleted">
+              <div class="stepper-circle">4</div>
+              <span class="stepper-label">COMPLETED</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Rejection / Revision Banner (Only if REJECTED) -->
+        <div class="card" id="rejectionAlertBox" style="display: none; border-left: 4px solid var(--color-rejected); background: #fff1f2;">
+          <div class="card-body">
+            <div style="display: flex; gap: 1rem; align-items: flex-start;">
+              <div style="color: var(--color-rejected); margin-top: 0.2rem;">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+              </div>
+              <div>
+                <h4 style="color: var(--color-rejected); font-weight: 700; margin-bottom: 0.35rem;">Revision Requested by Admin</h4>
+                <p id="rejectionReasonText" style="color: var(--color-slate-700); font-size: 0.9rem; margin-bottom: 0.5rem;">Reason not specified.</p>
+                <p style="color: var(--color-slate-500); font-size: 0.8rem;">Please update your code or submission deliverables below and resubmit.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Task Info Card -->
+        <div class="card" style="margin-bottom: 1.5rem;">
+          <div class="card-header">
+            <div class="card-title">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--color-primary)" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+              <span id="detailTaskTitle">Loading Task Details...</span>
+            </div>
+            <div style="display: flex; gap: 0.5rem; align-items: center;">
+              <span id="detailPriorityBadge" class="priority-medium">Medium</span>
+            </div>
+          </div>
+
+          <div class="card-body">
+            <div style="margin-bottom: 1.5rem;">
+              <h4 style="font-size: 0.85rem; font-weight: 700; text-transform: uppercase; color: var(--color-slate-400); margin-bottom: 0.5rem;">Description &amp; Instructions</h4>
+              <p id="detailTaskDescription" style="color: var(--color-slate-700); font-size: 0.95rem; line-height: 1.6; white-space: pre-line;">-</p>
+            </div>
+
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; padding: 1rem; background: var(--color-slate-50); border-radius: var(--radius-md); border: 1px solid var(--color-slate-200);">
+              <div>
+                <div style="font-size: 0.75rem; color: var(--color-slate-500); font-weight: 600;">ASSIGNED TO</div>
+                <div style="font-weight: 700; color: var(--color-slate-800);" id="detailAssignedTo">-</div>
+              </div>
+              <div>
+                <div style="font-size: 0.75rem; color: var(--color-slate-500); font-weight: 600;">DEADLINE</div>
+                <div style="font-weight: 700; color: var(--color-slate-800);" id="detailDeadline">-</div>
+              </div>
+              <div>
+                <div style="font-size: 0.75rem; color: var(--color-slate-500); font-weight: 600;">ASSIGNED BY</div>
+                <div style="font-weight: 700; color: var(--color-slate-800);" id="detailAssignedBy">-</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Action bar for Member (if ASSIGNED) -->
+          <div class="card-footer" id="memberStartTaskBar" style="display: none; justify-content: flex-end;">
+            <button type="button" class="btn btn-primary" id="btnStartTaskNow">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polygon points="10 8 16 12 10 16 10 8"/></svg>
+              <span>Start Working (Change Status to IN PROGRESS)</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Existing Submissions Viewer (If SUBMITTED or COMPLETED or REJECTED) -->
+        <div class="card" id="submissionDetailsCard" style="display: none; margin-bottom: 1.5rem; border-top: 4px solid var(--color-submitted);">
+          <div class="card-header">
+            <div class="card-title">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--color-submitted)" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+              <span>Work Submission Details</span>
+            </div>
+            <span id="submissionDateLabel" style="font-size: 0.85rem; color: var(--color-slate-500);">-</span>
+          </div>
+          <div class="card-body">
+            <div style="margin-bottom: 1.25rem;">
+              <div style="font-size: 0.75rem; font-weight: 700; color: var(--color-slate-400); text-transform: uppercase; margin-bottom: 0.35rem;">Work Summary &amp; Notes</div>
+              <p id="submissionNotesText" style="color: var(--color-slate-800); font-size: 0.95rem; line-height: 1.5; white-space: pre-line;">-</p>
+            </div>
+
+            <div style="margin-bottom: 1.25rem;">
+              <div style="font-size: 0.75rem; font-weight: 700; color: var(--color-slate-400); text-transform: uppercase; margin-bottom: 0.35rem;">GitHub / Project Repository Link</div>
+              <div id="submissionGithubContainer">
+                <a href="#" target="_blank" rel="noopener noreferrer" id="submissionGithubLink" class="btn btn-secondary btn-sm" style="display: inline-flex;">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
+                  <span>Open GitHub Repository</span>
+                </a>
+              </div>
+            </div>
+
+            <div style="margin-bottom: 0.5rem;">
+              <div style="font-size: 0.75rem; font-weight: 700; color: var(--color-slate-400); text-transform: uppercase; margin-bottom: 0.35rem;">Attached Deliverable File</div>
+              <div id="submissionFileContainer">
+                <a href="#" target="_blank" id="submissionFileLink" class="btn btn-secondary btn-sm" style="display: inline-flex;">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                  <span id="submissionFileName">Download Attached Deliverable</span>
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <!-- Admin Review Actions Bar -->
+          <div class="card-footer" id="adminReviewActionsBar" style="display: none; justify-content: flex-end; gap: 0.75rem; background: var(--color-slate-50);">
+            <button type="button" class="btn btn-danger" id="btnRejectSubmission">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+              <span>Reject &amp; Request Revision</span>
+            </button>
+            <button type="button" class="btn btn-success" id="btnApproveSubmission">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+              <span>Approve &amp; Mark Completed</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Member Submission Form (Visible if assigned member & status == IN PROGRESS or REJECTED) -->
+        <div class="card" id="memberSubmissionFormCard" style="display: none; border-top: 4px solid var(--color-primary);">
+          <div class="card-header">
+            <div class="card-title">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--color-primary)" stroke-width="2"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+              <span id="submitFormTitle">Submit Completed Task</span>
+            </div>
+            <span style="font-size: 0.8rem; color: var(--color-slate-500);">All fields are submitted to Admin for verification</span>
+          </div>
+
+          <form id="taskSubmissionForm">
+            <div class="card-body">
+              <div class="form-group">
+                <label class="form-label" for="subDescription">Description &amp; Completion Summary *</label>
+                <textarea id="subDescription" class="form-input" style="width: 100%; min-height: 90px; resize: vertical;" placeholder="Summarize your work, changes made, features implemented..." required></textarea>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="subGithub">GitHub / Repository URL *</label>
+                <input type="url" id="subGithub" class="form-input" style="width: 100%;" placeholder="https://github.com/username/project" required />
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="subFileInput">Attachment File (ZIP, PDF, DOCX, PNG, JPG)</label>
+                <div class="file-drop-zone" id="fileDropZone">
+                  <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="var(--color-slate-400)" stroke-width="1.75" style="margin-bottom: 0.5rem;"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                  <p style="font-size: 0.85rem; font-weight: 600; color: var(--color-slate-700); margin-bottom: 0.25rem;">
+                    Drag &amp; drop file here, or <span style="color: var(--color-primary); cursor: pointer;">browse</span>
+                  </p>
+                  <span style="font-size: 0.75rem; color: var(--color-slate-500);">Supports code bundles, screenshots, documentations</span>
+                  <input type="file" id="subFileInput" style="display: none;" />
+                </div>
+                <div id="fileSelectedPreview" style="display: none; margin-top: 0.5rem; font-size: 0.85rem; color: var(--color-primary); font-weight: 600;">
+                  Selected: <span id="fileNameDisplay"></span>
+                </div>
+              </div>
+
+              <!-- Upload Progress -->
+              <div id="uploadProgressContainer" style="display: none; margin-top: 1rem;">
+                <div style="font-size: 0.8rem; color: var(--color-slate-500); margin-bottom: 0.25rem;">Uploading file to Firebase Storage...</div>
+                <div style="width: 100%; height: 6px; background: var(--color-slate-200); border-radius: var(--radius-pill); overflow: hidden;">
+                  <div id="uploadProgressBar" style="width: 0%; height: 100%; background: var(--color-primary); transition: width 0.3s ease;"></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="card-footer" style="justify-content: flex-end;">
+              <button type="submit" class="btn btn-primary btn-lg" id="btnSubmitWork">
+                <span>Submit Work to Admin</span>
+              </button>
+            </div>
+          </form>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <!-- Rejection Modal for Admin -->
+  <div class="modal-backdrop" id="rejectionModal">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <h3 class="modal-title">Reject Submission &amp; Request Revision</h3>
+        <button type="button" class="modal-close" id="closeRejectModalBtn">&times;</button>
+      </div>
+      <div class="modal-body">
+        <p style="font-size: 0.85rem; color: var(--color-slate-600); margin-bottom: 1rem;">
+          Provide constructive feedback explaining what needs to be changed. The member will be notified immediately to revise and resubmit.
+        </p>
+        <div class="form-group">
+          <label class="form-label" for="rejectReasonInput">Reason for Rejection *</label>
+          <textarea id="rejectReasonInput" class="form-input" style="width: 100%; min-height: 90px;" placeholder="e.g. Please fix the broken link, add test cases, or format code properly..." required></textarea>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" id="cancelRejectBtn">Cancel</button>
+        <button type="button" class="btn btn-danger" id="confirmRejectBtn">Confirm Rejection</button>
+      </div>
+    </div>
+  </div>
+
+  <script type="module">
+    import { initAuthGuard } from "./js/auth.js";
+    import { 
+      getTaskById, 
+      startTask, 
+      submitTaskWork, 
+      getTaskSubmissions, 
+      approveSubmission, 
+      rejectSubmission, 
+      TASK_STATUS 
+    } from "./js/tasks.js";
+    import { showToast } from "./js/firebase-config.js";
+
+    let currentUser = null;
+    let currentTask = null;
+    let selectedFile = null;
+
+    const urlParams = new URLSearchParams(window.location.search);
+    const taskId = urlParams.get("id");
+
+    if (!taskId) {
+      window.location.href = "tasks.html";
+    }
+
+    (async () => {
+      const profile = await initAuthGuard(["admin", "member"]);
+      if (profile) {
+        currentUser = profile;
+
+        const navDashboard = document.getElementById("navDashboardLink");
+        const navReports = document.getElementById("navReportsLink");
+        const sidebarRoleTag = document.getElementById("sidebarRoleTag");
+
+        if (profile.role === "admin") {
+          navDashboard.href = "admin.html";
+          sidebarRoleTag.textContent = "ADMIN";
+          sidebarRoleTag.style.background = "var(--color-primary)";
+        } else {
+          navDashboard.href = "member.html";
+          sidebarRoleTag.textContent = "MEMBER";
+          sidebarRoleTag.style.background = "var(--color-present)";
+          if (navReports) navReports.style.display = "none";
+        }
+
+        await loadTaskDetails();
+        setupSubmissionForm();
+        setupAdminReviewActions();
+      }
+    })();
+
+    async function loadTaskDetails() {
+      currentTask = await getTaskById(taskId);
+      if (!currentTask) {
+        showToast("Task not found.", "error");
+        setTimeout(() => window.location.href = "tasks.html", 1500);
+        return;
+      }
+
+      // Populate text info
+      document.getElementById("headerTaskTitle").textContent = currentTask.title;
+      document.getElementById("detailTaskTitle").textContent = currentTask.title;
+      document.getElementById("detailTaskDescription").textContent = currentTask.description || "No description provided.";
+      document.getElementById("detailAssignedTo").textContent = `${currentTask.assignedToName || '-'} (${currentTask.assignedToEmail || ''})`;
+      document.getElementById("detailDeadline").textContent = currentTask.deadline || "No deadline";
+      document.getElementById("detailAssignedBy").textContent = currentTask.createdByName || "Admin";
+
+      // Priority Badge
+      const prioBadge = document.getElementById("detailPriorityBadge");
+      prioBadge.textContent = currentTask.priority || "Medium";
+      prioBadge.className = `priority-${(currentTask.priority || 'medium').toLowerCase()}`;
+
+      // Status Badge
+      const statusBadge = document.getElementById("taskHeaderStatusBadge");
+      statusBadge.textContent = currentTask.status;
+      let badgeClass = "badge-assigned";
+      if (currentTask.status === TASK_STATUS.IN_PROGRESS) badgeClass = "badge-inprogress";
+      else if (currentTask.status === TASK_STATUS.SUBMITTED) badgeClass = "badge-submitted";
+      else if (currentTask.status === TASK_STATUS.COMPLETED) badgeClass = "badge-completed";
+      else if (currentTask.status === TASK_STATUS.REJECTED) badgeClass = "badge-rejected";
+      statusBadge.className = `badge ${badgeClass}`;
+
+      // Update Stepper Visual
+      updateStepper(currentTask.status);
+
+      // Check Rejection state
+      const rejectionAlert = document.getElementById("rejectionAlertBox");
+      if (currentTask.status === TASK_STATUS.REJECTED) {
+        rejectionAlert.style.display = "block";
+        document.getElementById("rejectionReasonText").textContent = currentTask.rejectionReason || "Please review and revise your submission.";
+      } else {
+        rejectionAlert.style.display = "none";
+      }
+
+      // Check permissions and states
+      const isAssignedMember = currentUser.role === "member" && currentTask.assignedTo === currentUser.uid;
+      const isAdmin = currentUser.role === "admin";
+
+      // 1. Member Start Task Bar
+      const memberStartBar = document.getElementById("memberStartTaskBar");
+      if (isAssignedMember && currentTask.status === TASK_STATUS.ASSIGNED) {
+        memberStartBar.style.display = "flex";
+      } else {
+        memberStartBar.style.display = "none";
+      }
+
+      // 2. Member Submission Form
+      const submissionFormCard = document.getElementById("memberSubmissionFormCard");
+      if (isAssignedMember && (currentTask.status === TASK_STATUS.IN_PROGRESS || currentTask.status === TASK_STATUS.REJECTED)) {
+        submissionFormCard.style.display = "block";
+        if (currentTask.status === TASK_STATUS.REJECTED) {
+          document.getElementById("submitFormTitle").textContent = "Resubmit Revised Work";
+        }
+      } else {
+        submissionFormCard.style.display = "none";
+      }
+
+      // 3. Submissions History & Details
+      const submissions = await getTaskSubmissions(taskId);
+      const submissionDetailsCard = document.getElementById("submissionDetailsCard");
+      const adminReviewBar = document.getElementById("adminReviewActionsBar");
+
+      if (submissions.length > 0 || currentTask.status === TASK_STATUS.SUBMITTED || currentTask.status === TASK_STATUS.COMPLETED) {
+        submissionDetailsCard.style.display = "block";
+        const latest = submissions[0] || {};
+
+        document.getElementById("submissionNotesText").textContent = latest.description || currentTask.submissionDescription || "No notes submitted.";
+        document.getElementById("submissionDateLabel").textContent = latest.submittedAt ? new Date(latest.submittedAt).toLocaleString() : "-";
+
+        const ghLink = document.getElementById("submissionGithubLink");
+        const ghContainer = document.getElementById("submissionGithubContainer");
+        const ghUrl = latest.githubLink || currentTask.submissionGithub;
+        if (ghUrl) {
+          ghLink.href = ghUrl;
+          ghContainer.style.display = "block";
+        } else {
+          ghContainer.innerHTML = "<span style='color: var(--color-slate-400); font-size: 0.85rem;'>No repository link provided</span>";
+        }
+
+        const fileLink = document.getElementById("submissionFileLink");
+        const fileNameSpan = document.getElementById("submissionFileName");
+        const fileContainer = document.getElementById("submissionFileContainer");
+        const fileUrl = latest.fileUrl || currentTask.submissionFileUrl;
+        const fileName = latest.fileName || currentTask.submissionFileName;
+
+        if (fileUrl) {
+          fileLink.href = fileUrl;
+          fileNameSpan.textContent = `Download: ${fileName || 'Deliverable File'}`;
+          fileContainer.style.display = "block";
+        } else {
+          fileContainer.innerHTML = "<span style='color: var(--color-slate-400); font-size: 0.85rem;'>No attached file</span>";
+        }
+
+        // Show Admin Review Actions if Admin & Status == SUBMITTED
+        if (isAdmin && currentTask.status === TASK_STATUS.SUBMITTED) {
+          adminReviewBar.style.display = "flex";
+        } else {
+          adminReviewBar.style.display = "none";
+        }
+      } else {
+        submissionDetailsCard.style.display = "none";
+      }
+    }
+
+    function updateStepper(status) {
+      const step1 = document.getElementById("stepAssigned");
+      const step2 = document.getElementById("stepInProgress");
+      const step3 = document.getElementById("stepSubmitted");
+      const step4 = document.getElementById("stepCompleted");
+
+      const line1 = document.getElementById("line1");
+      const line2 = document.getElementById("line2");
+      const line3 = document.getElementById("line3");
+
+      [step1, step2, step3, step4].forEach(s => s.classList.remove("active", "completed"));
+      [line1, line2, line3].forEach(l => l.classList.remove("active"));
+
+      step1.classList.add("completed");
+
+      if (status === TASK_STATUS.IN_PROGRESS) {
+        step1.classList.add("completed");
+        line1.classList.add("active");
+        step2.classList.add("active");
+      } else if (status === TASK_STATUS.SUBMITTED) {
+        step1.classList.add("completed");
+        line1.classList.add("active");
+        step2.classList.add("completed");
+        line2.classList.add("active");
+        step3.classList.add("active");
+      } else if (status === TASK_STATUS.COMPLETED) {
+        step1.classList.add("completed");
+        line1.classList.add("active");
+        step2.classList.add("completed");
+        line2.classList.add("active");
+        step3.classList.add("completed");
+        line3.classList.add("active");
+        step4.classList.add("completed");
+      } else if (status === TASK_STATUS.REJECTED) {
+        step1.classList.add("completed");
+        line1.classList.add("active");
+        step2.classList.add("active");
+      } else {
+        step1.classList.add("active");
+      }
+    }
+
+    // Start Task Handler
+    document.getElementById("btnStartTaskNow").addEventListener("click", async () => {
+      const btn = document.getElementById("btnStartTaskNow");
+      btn.disabled = true;
+      const res = await startTask(taskId, currentTask.status);
+      if (res.success) {
+        await loadTaskDetails();
+      } else {
+        btn.disabled = false;
+      }
+    });
+
+    // File Drag & Drop Setup
+    function setupSubmissionForm() {
+      const dropZone = document.getElementById("fileDropZone");
+      const fileInput = document.getElementById("subFileInput");
+      const filePreview = document.getElementById("fileSelectedPreview");
+      const fileNameDisplay = document.getElementById("fileNameDisplay");
+
+      dropZone.addEventListener("click", () => fileInput.click());
+
+      dropZone.addEventListener("dragover", (e) => {
+        e.preventDefault();
+        dropZone.style.borderColor = "var(--color-primary)";
+        dropZone.style.background = "var(--color-primary-light)";
+      });
+
+      dropZone.addEventListener("dragleave", () => {
+        dropZone.style.borderColor = "var(--color-slate-300)";
+        dropZone.style.background = "var(--color-slate-50)";
+      });
+
+      dropZone.addEventListener("drop", (e) => {
+        e.preventDefault();
+        dropZone.style.borderColor = "var(--color-slate-300)";
+        dropZone.style.background = "var(--color-slate-50)";
+        if (e.dataTransfer.files && e.dataTransfer.files[0]) {
+          selectedFile = e.dataTransfer.files[0];
+          fileNameDisplay.textContent = selectedFile.name;
+          filePreview.style.display = "block";
+        }
+      });
+
+      fileInput.addEventListener("change", (e) => {
+        if (e.target.files && e.target.files[0]) {
+          selectedFile = e.target.files[0];
+          fileNameDisplay.textContent = selectedFile.name;
+          filePreview.style.display = "block";
+        }
+      });
+
+      // Submit Form
+      const form = document.getElementById("taskSubmissionForm");
+      form.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const description = document.getElementById("subDescription").value.trim();
+        const githubLink = document.getElementById("subGithub").value.trim();
+
+        if (!description || !githubLink) {
+          showToast("Please provide both work description and GitHub URL.", "warning");
+          return;
+        }
+
+        const submitBtn = document.getElementById("btnSubmitWork");
+        submitBtn.disabled = true;
+        submitBtn.textContent = "Uploading & Submitting...";
+
+        if (selectedFile) {
+          document.getElementById("uploadProgressContainer").style.display = "block";
+        }
+
+        const res = await submitTaskWork(
+          taskId,
+          currentTask.title,
+          currentUser,
+          {
+            description,
+            githubUrl: githubLink,
+            file: selectedFile
+          },
+          (pct) => {
+            document.getElementById("uploadProgressBar").style.width = `${pct}%`;
+          }
+        );
+
+        submitBtn.disabled = false;
+        submitBtn.textContent = "Submit Work to Admin";
+
+        if (res.success) {
+          await loadTaskDetails();
+        }
+      });
+    }
+
+    // Admin Review Actions Setup
+    function setupAdminReviewActions() {
+      const approveBtn = document.getElementById("btnApproveSubmission");
+      const rejectBtn = document.getElementById("btnRejectSubmission");
+      const rejectModal = document.getElementById("rejectionModal");
+      const closeRejectBtn = document.getElementById("closeRejectModalBtn");
+      const cancelRejectBtn = document.getElementById("cancelRejectBtn");
+      const confirmRejectBtn = document.getElementById("confirmRejectBtn");
+      const rejectReasonInput = document.getElementById("rejectReasonInput");
+
+      // Approve
+      approveBtn.addEventListener("click", async () => {
+        if (confirm("Are you sure you want to approve this submission and mark the task as COMPLETED?")) {
+          approveBtn.disabled = true;
+          const res = await approveSubmission(taskId, currentTask.assignedTo, currentUser);
+          if (res.success) {
+            await loadTaskDetails();
+          } else {
+            approveBtn.disabled = false;
+          }
+        }
+      });
+
+      // Reject Modal
+      rejectBtn.addEventListener("click", () => {
+        rejectModal.classList.add("show");
+      });
+
+      [closeRejectBtn, cancelRejectBtn].forEach(btn => {
+        btn.addEventListener("click", () => {
+          rejectModal.classList.remove("show");
+        });
+      });
+
+      confirmRejectBtn.addEventListener("click", async () => {
+        const reason = rejectReasonInput.value.trim();
+        if (!reason) {
+          showToast("Please enter a reason for revision.", "warning");
+          return;
+        }
+
+        confirmRejectBtn.disabled = true;
+        confirmRejectBtn.textContent = "Rejecting...";
+
+        const res = await rejectSubmission(taskId, currentTask.assignedTo, reason, currentUser);
+        confirmRejectBtn.disabled = false;
+        confirmRejectBtn.textContent = "Confirm Rejection";
+
+        if (res.success) {
+          rejectModal.classList.remove("show");
+          await loadTaskDetails();
+        }
+      });
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Weekly Attendance Matrix - Attendance &amp; Task Distribution</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <div id="toast-container"></div>
+  <div class="sidebar-backdrop"></div>
+
+  <div class="app-layout">
+    <!-- Sidebar -->
+    <aside class="app-sidebar">
+      <div class="sidebar-header">
+        <a href="index.html" class="sidebar-brand">
+          <span style="width: 28px; height: 28px; border-radius: var(--radius-sm); background: var(--color-primary); color: white; display: flex; align-items: center; justify-content: center;">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/><path d="m9 16 2 2 4-4"/></svg>
+          </span>
+          <span>TaskFlow</span>
+          <span class="brand-badge" id="sidebarRoleTag">Portal</span>
+        </a>
+      </div>
+
+      <nav class="sidebar-nav">
+        <div class="nav-section-title">Navigation</div>
+        <a href="admin.html" class="nav-item" id="navDashboardLink">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+          <span>Dashboard</span>
+        </a>
+        <a href="attendance.html" class="nav-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          <span>Daily Attendance</span>
+        </a>
+        <a href="weekly-attendance.html" class="nav-item active">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+          <span>Weekly Matrix</span>
+          <span class="badge" style="background: rgba(16, 185, 129, 0.2); color: #34d399;">Core</span>
+        </a>
+        <a href="tasks.html" class="nav-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+          <span>Tasks Management</span>
+        </a>
+        <a href="reports.html" class="nav-item" id="navReportsLink">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+          <span>Reports &amp; Export</span>
+        </a>
+        <div class="nav-section-title">Settings</div>
+        <a href="profile.html" class="nav-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          <span>My Profile</span>
+        </a>
+      </nav>
+
+      <div class="sidebar-footer">
+        <div class="sidebar-user-card">
+          <div class="user-avatar" data-user-avatar>U</div>
+          <div class="user-details">
+            <div class="user-name" data-user-name>User Name</div>
+            <div class="user-role-badge" data-user-role>ROLE</div>
+          </div>
+        </div>
+        <button type="button" class="btn btn-secondary btn-sm" id="logoutBtn" style="width: 100%; justify-content: flex-start; background: rgba(255,255,255,0.05); color: #e2e8f0; border: none;">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+          <span>Sign Out</span>
+        </button>
+      </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <div class="app-main">
+      <header class="app-header">
+        <div class="header-left">
+          <button type="button" class="sidebar-toggle-btn" aria-label="Toggle Sidebar">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+          </button>
+          <div class="page-title-wrap">
+            <h1 class="page-heading">Weekly Attendance Matrix</h1>
+            <span class="page-subheading">Mon&ndash;Sat grid, automated % calculations &amp; member filtering</span>
+          </div>
+        </div>
+
+        <div class="header-right">
+          <!-- Notification Bell -->
+          <div class="notif-bell-container">
+            <button class="icon-btn" id="notifBellBtn" aria-label="Notifications">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>
+              <span class="notif-badge" id="notifBadge" style="display: none;">0</span>
+            </button>
+            <div class="dropdown-menu" id="notifDropdown">
+              <div class="dropdown-header">
+                <span>Notifications</span>
+              </div>
+              <div class="dropdown-body" id="notifList">
+                <div style="padding: 1rem; text-align: center; color: var(--color-slate-400); font-size: 0.85rem;">No notifications</div>
+              </div>
+            </div>
+          </div>
+
+          <button type="button" class="btn btn-secondary btn-sm" id="btnExportCSV">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            <span>Export CSV</span>
+          </button>
+        </div>
+      </header>
+
+      <main class="page-container">
+        <!-- Week Controls & Navigation Bar -->
+        <div class="filter-bar" style="background: white; border-radius: var(--radius-lg); padding: 1.15rem 1.5rem;">
+          <div class="filter-group">
+            <button type="button" class="btn btn-secondary btn-sm" id="btnPrevWeek">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
+              <span>Previous Week</span>
+            </button>
+            <button type="button" class="btn btn-primary btn-sm" id="btnCurrentWeek">
+              <span>Current Week</span>
+            </button>
+            <button type="button" class="btn btn-secondary btn-sm" id="btnNextWeek">
+              <span>Next Week</span>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+            </button>
+
+            <div style="margin-left: 0.5rem;">
+              <input type="date" id="weekDatePicker" class="form-input" style="padding: 0.4rem 0.65rem; font-size: 0.85rem;" title="Pick any date in target week" />
+            </div>
+          </div>
+
+          <div class="filter-group">
+            <div style="display: flex; align-items: center; gap: 0.5rem;">
+              <label for="memberFilterSelect" style="font-size: 0.85rem; font-weight: 600; color: var(--color-slate-600); white-space: nowrap;">Filter Member:</label>
+              <select id="memberFilterSelect" class="form-select" style="min-width: 200px;">
+                <option value="ALL">All Members</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- Weekly Highlights Card -->
+        <div class="card" style="margin-bottom: 1.5rem;">
+          <div class="card-header" style="background: var(--color-slate-50);">
+            <div>
+              <span style="font-size: 0.75rem; text-transform: uppercase; font-weight: 700; color: var(--color-slate-400); letter-spacing: 0.05em;">Active Range</span>
+              <h2 id="weekRangeLabel" style="font-size: 1.25rem; font-weight: 800; color: var(--color-slate-800); margin-top: 0.15rem;">
+                Loading Week...
+              </h2>
+            </div>
+
+            <!-- Legend -->
+            <div style="display: flex; align-items: center; gap: 1.25rem; font-size: 0.85rem; font-weight: 600;">
+              <div style="display: flex; align-items: center; gap: 0.4rem;">
+                <span class="status-cell-p" style="width: 24px; height: 24px; font-size: 0.75rem;">P</span>
+                <span>= Present</span>
+              </div>
+              <div style="display: flex; align-items: center; gap: 0.4rem;">
+                <span class="status-cell-a" style="width: 24px; height: 24px; font-size: 0.75rem;">A</span>
+                <span>= Absent</span>
+              </div>
+              <div style="display: flex; align-items: center; gap: 0.4rem;">
+                <span class="status-cell-none" style="font-size: 1rem;">-</span>
+                <span>= Future / Not Occurred</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Weekly Matrix Table -->
+          <div class="card-body" style="padding: 0;">
+            <div class="table-responsive">
+              <table class="weekly-matrix-table" id="weeklyMatrixTable">
+                <thead id="weeklyMatrixThead">
+                  <tr>
+                    <th class="member-col">Intern ID</th>
+                    <th class="day-header"><span class="day-name">Mon</span><span class="day-date">-</span></th>
+                    <th class="day-header"><span class="day-name">Tue</span><span class="day-date">-</span></th>
+                    <th class="day-header"><span class="day-name">Wed</span><span class="day-date">-</span></th>
+                    <th class="day-header"><span class="day-name">Thu</span><span class="day-date">-</span></th>
+                    <th class="day-header"><span class="day-name">Fri</span><span class="day-date">-</span></th>
+                    <th class="day-header"><span class="day-name">Sat</span><span class="day-date">-</span></th>
+                    <th class="day-header"><span class="day-name">Sun</span><span class="day-date">-</span></th>
+                    <th style="min-width: 80px; background: var(--color-present-bg); color: var(--color-present);">Present</th>
+                    <th style="min-width: 80px; background: var(--color-absent-bg); color: var(--color-absent);">Absent</th>
+                    <th style="min-width: 140px; background: var(--color-primary-light); color: var(--color-primary-dark);">Attendance %</th>
+                  </tr>
+                </thead>
+                <tbody id="weeklyMatrixTbody">
+                  <tr>
+                    <td colspan="11" style="padding: 3rem; text-align: center; color: var(--color-slate-400);">
+                      Loading weekly attendance matrix...
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="card-footer">
+            <span id="matrixSummaryFooterText">Showing records for 0 members across 6 working days (Mon&ndash;Sat).</span>
+            <span style="font-size: 0.8rem; color: var(--color-slate-500);">Attendance % calculated automatically: (Present &divide; Tracked Days) &times; 100</span>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <script type="module">
+    import { initAuthGuard } from "./js/auth.js";
+    import { 
+      getMondayOfWeek, 
+      getWeeklyAttendanceMatrix, 
+      exportWeeklyAttendanceCSV,
+      formatDateISO 
+    } from "./js/attendance.js";
+    import { showToast } from "./js/firebase-config.js";
+
+    let currentMonday = getMondayOfWeek(new Date());
+    let currentMatrixData = null;
+    let currentUser = null;
+
+    const btnPrevWeek = document.getElementById("btnPrevWeek");
+    const btnCurrentWeek = document.getElementById("btnCurrentWeek");
+    const btnNextWeek = document.getElementById("btnNextWeek");
+    const weekDatePicker = document.getElementById("weekDatePicker");
+    const memberFilterSelect = document.getElementById("memberFilterSelect");
+    const btnExportCSV = document.getElementById("btnExportCSV");
+    const weekRangeLabel = document.getElementById("weekRangeLabel");
+
+    (async () => {
+      // Initialize Auth
+      const profile = await initAuthGuard(["admin", "member"]);
+      if (profile) {
+        currentUser = profile;
+
+        // Adjust UI if member
+        const navDashboard = document.getElementById("navDashboardLink");
+        const navReports = document.getElementById("navReportsLink");
+        const sidebarRoleTag = document.getElementById("sidebarRoleTag");
+
+        if (profile.role === "admin") {
+          navDashboard.href = "admin.html";
+          sidebarRoleTag.textContent = "ADMIN";
+          sidebarRoleTag.style.background = "var(--color-primary)";
+        } else {
+          navDashboard.href = "member.html";
+          sidebarRoleTag.textContent = "MEMBER";
+          sidebarRoleTag.style.background = "var(--color-present)";
+          if (navReports) navReports.style.display = "none";
+        }
+
+        await loadMatrixForMonday(currentMonday);
+      }
+    })();
+
+    // Previous Week
+    btnPrevWeek.addEventListener("click", () => {
+      currentMonday.setDate(currentMonday.getDate() - 7);
+      loadMatrixForMonday(currentMonday);
+    });
+
+    // Current Week
+    btnCurrentWeek.addEventListener("click", () => {
+      currentMonday = getMondayOfWeek(new Date());
+      loadMatrixForMonday(currentMonday);
+    });
+
+    // Next Week
+    btnNextWeek.addEventListener("click", () => {
+      currentMonday.setDate(currentMonday.getDate() + 7);
+      loadMatrixForMonday(currentMonday);
+    });
+
+    // Pick Date
+    weekDatePicker.addEventListener("change", () => {
+      if (weekDatePicker.value) {
+        const picked = new Date(weekDatePicker.value + "T00:00:00");
+        currentMonday = getMondayOfWeek(picked);
+        loadMatrixForMonday(currentMonday);
+      }
+    });
+
+    // Member Filter
+    memberFilterSelect.addEventListener("change", renderMatrix);
+
+    // Export CSV
+    btnExportCSV.addEventListener("click", () => {
+      if (currentMatrixData) {
+        exportWeeklyAttendanceCSV(currentMatrixData, weekRangeLabel.textContent.trim());
+      }
+    });
+
+    async function loadMatrixForMonday(mondayDate) {
+      weekDatePicker.value = formatDateISO(mondayDate);
+      
+      const matrixData = await getWeeklyAttendanceMatrix(mondayDate);
+      currentMatrixData = matrixData;
+
+      // Format Week Label
+      const monDisplay = matrixData.workDays[0].fullDate.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });
+      const sunDisplay = matrixData.workDays[6].fullDate.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });
+      weekRangeLabel.textContent = `${monDisplay} – ${sunDisplay}`;
+
+      // Populate member filter dropdown once
+      if (memberFilterSelect.options.length <= 1) {
+        matrixData.rows.forEach(r => {
+          const opt = document.createElement("option");
+          opt.value = r.memberId;
+          opt.textContent = `${r.internId || r.memberName} (${r.department})`;
+          memberFilterSelect.appendChild(opt);
+        });
+
+        // If member role, default selection to current user
+        if (currentUser && currentUser.role === "member") {
+          memberFilterSelect.value = currentUser.uid;
+        }
+      }
+
+      // Update Thead day dates
+      const thead = document.getElementById("weeklyMatrixThead");
+      thead.innerHTML = `
+        <tr>
+          <th class="member-col">Intern ID</th>
+          ${matrixData.workDays.map(d => `
+            <th class="day-header">
+              <span class="day-name">${d.name}</span>
+              <span class="day-date">${d.shortDate}</span>
+            </th>
+          `).join("")}
+          <th style="min-width: 80px; background: var(--color-present-bg); color: var(--color-present);">Present</th>
+          <th style="min-width: 80px; background: var(--color-absent-bg); color: var(--color-absent);">Absent</th>
+          <th style="min-width: 140px; background: var(--color-primary-light); color: var(--color-primary-dark);">Attendance %</th>
+        </tr>
+      `;
+
+      renderMatrix();
+    }
+
+    function renderMatrix() {
+      if (!currentMatrixData) return;
+
+      const tbody = document.getElementById("weeklyMatrixTbody");
+      const selectedMember = memberFilterSelect.value;
+
+      let displayRows = currentMatrixData.rows;
+      if (selectedMember !== "ALL") {
+        displayRows = displayRows.filter(r => r.memberId === selectedMember);
+      }
+
+      document.getElementById("matrixSummaryFooterText").textContent = 
+        `Showing ${displayRows.length} member(s) for week of ${weekRangeLabel.textContent}.`;
+
+      if (displayRows.length === 0) {
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="11" style="padding: 2.5rem; text-align: center; color: var(--color-slate-400);">
+              No member attendance data found for this selection.
+            </td>
+          </tr>
+        `;
+        return;
+      }
+
+      tbody.innerHTML = displayRows.map(row => {
+        // Percentage pill color
+        let pctClass = "pct-high";
+        if (row.percentage < 50) pctClass = "pct-low";
+        else if (row.percentage < 75) pctClass = "pct-med";
+
+        return `
+          <tr>
+            <td class="member-col">
+              <div style="font-weight: 700; color: var(--color-slate-800);">${row.internId || row.memberName}</div>
+              <div style="font-size: 0.75rem; color: var(--color-slate-500);">${row.department || 'Intern'}</div>
+            </td>
+            ${currentMatrixData.workDays.map(d => {
+              const status = row.dayStatuses[d.name] || "-";
+              if (status === "P") {
+                return `<td><span class="status-cell-p">P</span></td>`;
+              } else if (status === "A") {
+                return `<td><span class="status-cell-a">A</span></td>`;
+              } else {
+                return `<td><span class="status-cell-none">-</span></td>`;
+              }
+            }).join("")}
+            <td style="font-weight: 700; color: var(--color-present);">${row.presentCount}</td>
+            <td style="font-weight: 700; color: var(--color-absent);">${row.absentCount}</td>
+            <td>
+              <span class="pct-pill ${pctClass}">${row.percentage}%</span>
+            </td>
+          </tr>
+        `;
+      }).join("");
+    }
+  </script>
+</body>
+</html>

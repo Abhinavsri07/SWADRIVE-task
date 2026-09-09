@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Create Account - Attendance &amp; Task Distribution</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <div id="toast-container"></div>
+
+  <div class="auth-wrapper">
+    <div class="auth-card" style="max-width: 520px;">
+      <div class="auth-header">
+        <a href="index.html" class="auth-brand">
+          <span style="width: 32px; height: 32px; border-radius: var(--radius-sm); background: var(--color-primary); color: white; display: flex; align-items: center; justify-content: center;">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/><path d="m9 16 2 2 4-4"/></svg>
+          </span>
+          <span>TaskFlow</span>
+        </a>
+        <h2 style="font-size: 1.45rem; font-weight: 700; color: var(--color-slate-800);">Intern Registration</h2>
+        <p class="auth-subtitle">Register your Intern ID to mark attendance and access tasks</p>
+      </div>
+
+      <form id="registerForm">
+        <div class="form-group">
+          <label class="form-label" for="regInternId">Intern ID *</label>
+          <input 
+            type="text" 
+            id="regInternId" 
+            class="form-input" 
+            style="width: 100%; text-transform: uppercase; font-family: monospace; font-weight: 600;" 
+            placeholder="e.g. SWDI-006" 
+            required 
+            pattern="^SWDI-\d{3,}$"
+            title="Format must be SWDI-001, SWDI-002, etc."
+            autocomplete="off" 
+          />
+          <p class="form-help">Format: SWDI-001, SWDI-002, etc. (Assigned by Organization)</p>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="regPassword">Password *</label>
+          <input 
+            type="password" 
+            id="regPassword" 
+            class="form-input" 
+            style="width: 100%;" 
+            placeholder="Minimum 6 characters" 
+            required 
+            minlength="6" 
+            autocomplete="new-password" 
+          />
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="regConfirmPassword">Confirm Password *</label>
+          <input 
+            type="password" 
+            id="regConfirmPassword" 
+            class="form-input" 
+            style="width: 100%;" 
+            placeholder="Confirm your password" 
+            required 
+            minlength="6" 
+            autocomplete="new-password" 
+          />
+        </div>
+
+        <button type="submit" class="btn btn-primary btn-lg" id="submitRegisterBtn" style="width: 100%; margin-top: 0.75rem;">
+          Register as Intern
+        </button>
+      </form>
+
+      <div style="text-align: center; margin-top: 1.5rem; font-size: 0.875rem; color: var(--color-slate-600);">
+        Already registered? <a href="login.html" style="font-weight: 600;">Sign in with Intern ID</a>
+      </div>
+    </div>
+  </div>
+
+  <script type="module">
+    import { registerIntern } from "./js/auth.js";
+    import { showToast } from "./js/firebase-config.js";
+
+    const regForm = document.getElementById("registerForm");
+    const submitBtn = document.getElementById("submitRegisterBtn");
+
+    regForm.addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      const rawInternId = document.getElementById("regInternId").value;
+      const password = document.getElementById("regPassword").value;
+      const confirmPassword = document.getElementById("regConfirmPassword").value;
+
+      if (!rawInternId || !rawInternId.trim()) {
+        showToast("Please provide your Intern ID.", "warning");
+        return;
+      }
+
+      const internId = rawInternId.trim().toUpperCase();
+
+      // Format validation: SWDI-001, SWDI-002, etc.
+      const idPattern = /^SWDI-\d{3,}$/i;
+      if (!idPattern.test(internId)) {
+        showToast("Intern ID must follow format SWDI-001, SWDI-002, etc.", "error");
+        return;
+      }
+
+      if (password !== confirmPassword) {
+        showToast("Passwords do not match.", "error");
+        return;
+      }
+
+      if (password.length < 6) {
+        showToast("Password must be at least 6 characters long.", "error");
+        return;
+      }
+
+      submitBtn.disabled = true;
+      submitBtn.textContent = "Registering...";
+
+      const res = await registerIntern(internId, password);
+
+      if (!res.success) {
+        submitBtn.disabled = false;
+        submitBtn.textContent = "Register as Intern";
+      }
+    });
+  </script>
+</body>
+</html>

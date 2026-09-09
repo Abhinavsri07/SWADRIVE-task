@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Dashboard - Attendance &amp; Task Distribution</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <div id="toast-container"></div>
+  <div class="sidebar-backdrop"></div>
+
+  <div class="app-layout">
+    <!-- Sidebar -->
+    <aside class="app-sidebar">
+      <div class="sidebar-header">
+        <a href="admin.html" class="sidebar-brand">
+          <span style="width: 28px; height: 28px; border-radius: var(--radius-sm); background: var(--color-primary); color: white; display: flex; align-items: center; justify-content: center;">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/><path d="m9 16 2 2 4-4"/></svg>
+          </span>
+          <span>TaskFlow</span>
+          <span class="brand-badge">Admin</span>
+        </a>
+      </div>
+
+      <nav class="sidebar-nav">
+        <div class="nav-section-title">Core Management</div>
+        <a href="admin.html" class="nav-item active">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+          <span>Dashboard</span>
+        </a>
+        <a href="attendance.html" class="nav-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          <span>Daily Attendance</span>
+        </a>
+        <a href="weekly-attendance.html" class="nav-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+          <span>Weekly Matrix</span>
+          <span class="badge" style="background: rgba(16, 185, 129, 0.2); color: #34d399;">Core</span>
+        </a>
+        <a href="tasks.html" class="nav-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+          <span>Tasks &amp; Review</span>
+        </a>
+        <a href="reports.html" class="nav-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+          <span>Reports &amp; Export</span>
+        </a>
+
+        <div class="nav-section-title">Settings</div>
+        <a href="profile.html" class="nav-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          <span>Admin Profile</span>
+        </a>
+      </nav>
+
+      <div class="sidebar-footer">
+        <div class="sidebar-user-card">
+          <div class="user-avatar" data-user-avatar>AD</div>
+          <div class="user-details">
+            <div class="user-name" data-user-name>Admin Supervisor</div>
+            <div class="user-role-badge" data-user-role>ADMIN</div>
+          </div>
+        </div>
+        <button type="button" class="btn btn-secondary btn-sm" id="logoutBtn" style="width: 100%; justify-content: flex-start; background: rgba(255,255,255,0.05); color: #e2e8f0; border: none;">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+          <span>Sign Out</span>
+        </button>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <div class="app-main">
+      <header class="app-header">
+        <div class="header-left">
+          <button type="button" class="sidebar-toggle-btn" aria-label="Toggle Sidebar">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+          </button>
+          <div class="page-title-wrap">
+            <h1 class="page-heading">Admin Dashboard</h1>
+            <span class="page-subheading">Overview of attendance, members &amp; task statistics</span>
+          </div>
+        </div>
+
+        <div class="header-right">
+          <!-- Notification Bell -->
+          <div class="notif-bell-container">
+            <button class="icon-btn" id="notifBellBtn" aria-label="View Notifications">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>
+              <span class="notif-badge" id="notifBadge" style="display: none;">0</span>
+            </button>
+            <div class="dropdown-menu" id="notifDropdown">
+              <div class="dropdown-header">
+                <span>Notifications</span>
+              </div>
+              <div class="dropdown-body" id="notifList">
+                <div style="padding: 1rem; text-align: center; color: var(--color-slate-400); font-size: 0.85rem;">No notifications</div>
+              </div>
+            </div>
+          </div>
+
+          <button class="btn btn-primary btn-sm" id="openCreateTaskModalBtn">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            <span>Assign New Task</span>
+          </button>
+        </div>
+      </header>
+
+      <main class="page-container">
+        <!-- Metrics Grid -->
+        <div class="metrics-grid">
+          <div class="metric-card">
+            <div class="metric-info">
+              <span class="metric-label">Total Members</span>
+              <span class="metric-value" id="statTotalMembers">0</span>
+              <span class="metric-subtext">Registered team members</span>
+            </div>
+            <div class="metric-icon-wrap blue">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+            </div>
+          </div>
+
+          <div class="metric-card">
+            <div class="metric-info">
+              <span class="metric-label">Present Today</span>
+              <span class="metric-value" id="statPresentToday" style="color: var(--color-present);">0</span>
+              <span class="metric-subtext">Check-ins confirmed</span>
+            </div>
+            <div class="metric-icon-wrap green">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+            </div>
+          </div>
+
+          <div class="metric-card">
+            <div class="metric-info">
+              <span class="metric-label">Absent Today</span>
+              <span class="metric-value" id="statAbsentToday" style="color: var(--color-absent);">0</span>
+              <span class="metric-subtext">Not yet checked in</span>
+            </div>
+            <div class="metric-icon-wrap red">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+            </div>
+          </div>
+
+          <div class="metric-card">
+            <div class="metric-info">
+              <span class="metric-label">Total Tasks</span>
+              <span class="metric-value" id="statTotalTasks">0</span>
+              <span class="metric-subtext">All assigned workloads</span>
+            </div>
+            <div class="metric-icon-wrap purple">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+            </div>
+          </div>
+
+          <div class="metric-card">
+            <div class="metric-info">
+              <span class="metric-label">Submissions Pending</span>
+              <span class="metric-value" id="statSubmittedTasks" style="color: var(--color-submitted);">0</span>
+              <span class="metric-subtext">Awaiting your review</span>
+            </div>
+            <div class="metric-icon-wrap amber">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            </div>
+          </div>
+
+          <div class="metric-card">
+            <div class="metric-info">
+              <span class="metric-label">Tasks Completed</span>
+              <span class="metric-value" id="statCompletedTasks" style="color: var(--color-completed);">0</span>
+              <span class="metric-subtext">Approved and finalized</span>
+            </div>
+            <div class="metric-icon-wrap green">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+            </div>
+          </div>
+        </div>
+
+        <!-- Registered Interns Overview (Real-time Firestore) -->
+        <div class="card" style="border-top: 4px solid var(--color-primary);">
+          <div class="card-header">
+            <div>
+              <div class="card-title">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--color-primary)" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                <span>Registered Interns Directory &amp; Task Allocation</span>
+              </div>
+              <span style="font-size: 0.8rem; color: var(--color-slate-500);">Live Firestore listener updates in real-time as interns register</span>
+            </div>
+            <div style="display: flex; gap: 0.5rem;">
+              <button type="button" class="btn btn-primary btn-sm" id="openCreateTaskModalBtn">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                <span>Assign Task</span>
+              </button>
+            </div>
+          </div>
+          <div class="card-body" style="padding: 0;">
+            <div class="table-responsive">
+              <table class="data-table" id="registeredInternsTable">
+                <thead>
+                  <tr>
+                    <th>Intern ID</th>
+                    <th>Registration Date</th>
+                    <th>Today's Attendance</th>
+                    <th>Assigned Tasks</th>
+                    <th>Task Status</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="registeredInternsTableBody">
+                  <tr>
+                    <td colspan="6" style="text-align: center; padding: 2.5rem; color: var(--color-slate-400);">
+                      Listening for registered interns in Firestore...
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- Submissions Awaiting Review Section -->
+        <div class="card" style="border-left: 4px solid var(--color-submitted);">
+          <div class="card-header">
+            <div class="card-title">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--color-submitted)" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+              <span>Submissions Awaiting Review</span>
+            </div>
+            <a href="tasks.html?status=SUBMITTED" class="btn btn-secondary btn-sm">View All in Tasks</a>
+          </div>
+          <div class="card-body" id="pendingSubmissionsList" style="padding: 0.5rem 1.5rem;">
+            <div style="text-align: center; padding: 2rem; color: var(--color-slate-400);">Loading submissions...</div>
+          </div>
+        </div>
+
+        <!-- Today's Attendance Overview Section -->
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--color-primary)" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+              <span>Today's Daily Attendance Status</span>
+            </div>
+            <div style="display: flex; gap: 0.5rem;">
+              <a href="attendance.html" class="btn btn-secondary btn-sm">Full Attendance Log</a>
+              <a href="weekly-attendance.html" class="btn btn-primary btn-sm">Weekly Matrix Table</a>
+            </div>
+          </div>
+          <div class="card-body" style="padding: 0;">
+            <div class="table-responsive">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Member</th>
+                    <th>Department</th>
+                    <th>Date</th>
+                    <th>Status</th>
+                    <th>Check-In Time</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody id="todayAttendanceTableBody">
+                  <tr><td colspan="6" style="text-align:center; padding: 2rem; color: var(--color-slate-400);">Loading attendance data...</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <!-- Create Task Modal -->
+  <div class="modal-backdrop" id="createTaskModal">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <h3 class="modal-title">Create &amp; Assign Task</h3>
+        <button type="button" class="modal-close" data-close-modal="createTaskModal">&times;</button>
+      </div>
+      <form id="createTaskForm">
+        <div class="modal-body">
+          <div class="form-group">
+            <label class="form-label" for="taskTitle">Task Title *</label>
+            <input type="text" id="taskTitle" class="form-input" style="width: 100%;" placeholder="e.g. Build authentication flow with Firebase" required />
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="taskDescription">Task Description &amp; Requirements *</label>
+            <textarea id="taskDescription" class="form-input" style="width: 100%; min-height: 90px; resize: vertical;" placeholder="Detailed instructions, links to documentation, acceptance criteria..." required></textarea>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label" for="taskAssignedTo">Assign To Member *</label>
+              <select id="taskAssignedTo" class="form-select" style="width: 100%;" required>
+                <option value="">Loading members...</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="taskPriority">Priority</label>
+              <select id="taskPriority" class="form-select" style="width: 100%;">
+                <option value="Low">Low</option>
+                <option value="Medium" selected>Medium</option>
+                <option value="High">High</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="taskDeadline">Deadline Date *</label>
+            <input type="date" id="taskDeadline" class="form-input" style="width: 100%;" required />
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-close-modal="createTaskModal">Cancel</button>
+          <button type="submit" class="btn btn-primary">Create &amp; Assign Task</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script type="module">
+    import { initAuthGuard } from "./js/auth.js";
+    import { initAdminDashboard } from "./js/admin.js";
+
+    (async () => {
+      // Set default deadline date to tomorrow
+      const tomorrow = new Date();
+      tomorrow.setDate(tomorrow.getDate() + 1);
+      const deadlineInput = document.getElementById("taskDeadline");
+      if (deadlineInput) {
+        deadlineInput.value = tomorrow.toISOString().split("T")[0];
+      }
+
+      // Require Admin role
+      const profile = await initAuthGuard(["admin"]);
+      if (profile) {
+        await initAdminDashboard();
+      }
+    })();
+  </script>
+</body>
+</html>

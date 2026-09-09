@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sign In - Attendance &amp; Task Distribution</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <div id="toast-container"></div>
+
+  <div class="auth-wrapper">
+    <div class="auth-card">
+      <div class="auth-header">
+        <a href="index.html" class="auth-brand">
+          <span style="width: 32px; height: 32px; border-radius: var(--radius-sm); background: var(--color-primary); color: white; display: flex; align-items: center; justify-content: center; font-size: 1rem;">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/><path d="m9 16 2 2 4-4"/></svg>
+          </span>
+          <span>TaskFlow</span>
+        </a>
+        <h2 style="font-size: 1.45rem; font-weight: 700; color: var(--color-slate-800);">Workspace Sign In</h2>
+        <p class="auth-subtitle">Secure access to Attendance &amp; Task Distribution</p>
+      </div>
+
+      <!-- Login Mode Tabs -->
+      <div style="display: flex; background: var(--color-slate-100); border-radius: var(--radius-md); padding: 0.25rem; margin-bottom: 1.25rem;">
+        <button type="button" id="tabIntern" class="btn btn-sm" style="flex: 1; border-radius: var(--radius-sm); font-weight: 700; background: white; color: var(--color-primary); box-shadow: 0 1px 3px rgba(0,0,0,0.08);">
+          Intern Login
+        </button>
+        <button type="button" id="tabAdmin" class="btn btn-sm" style="flex: 1; border-radius: var(--radius-sm); font-weight: 600; color: var(--color-slate-600); background: transparent;">
+          Admin Portal
+        </button>
+      </div>
+
+      <form id="loginForm">
+        <!-- Dynamic Identifier Group -->
+        <div class="form-group">
+          <label class="form-label" id="identifierLabel" for="loginIdentifier">Intern ID</label>
+          <input 
+            type="text" 
+            id="loginIdentifier" 
+            class="form-input" 
+            style="width: 100%; text-transform: uppercase;" 
+            placeholder="e.g. SWDI-006" 
+            required 
+            autocomplete="username" 
+          />
+          <span id="identifierHint" style="display: block; font-size: 0.75rem; color: var(--color-slate-500); margin-top: 0.35rem;">
+            Enter your assigned Intern ID (Format: SWDI-001, SWDI-002, etc.)
+          </span>
+        </div>
+
+        <div class="form-group">
+          <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.35rem;">
+            <label class="form-label" for="loginPassword" style="margin-bottom: 0;">Password</label>
+            <button type="button" id="forgotPasswordBtn" style="background: none; border: none; color: var(--color-primary); font-size: 0.8rem; font-weight: 600; cursor: pointer;">
+              Forgot Password?
+            </button>
+          </div>
+          <div style="position: relative;">
+            <input type="password" id="loginPassword" class="form-input" style="width: 100%; padding-right: 2.5rem;" placeholder="&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;" required autocomplete="current-password" />
+            <button type="button" id="togglePasswordBtn" style="position: absolute; right: 0.75rem; top: 50%; transform: translateY(-50%); background: none; border: none; color: var(--color-slate-400); cursor: pointer; padding: 0.2rem;" aria-label="Toggle password visibility">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+            </button>
+          </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary btn-lg" id="submitLoginBtn" style="width: 100%; margin-top: 0.5rem;">
+          Sign In as Intern
+        </button>
+      </form>
+
+      <div id="registerLinkContainer" style="text-align: center; margin-top: 1.5rem; font-size: 0.875rem; color: var(--color-slate-600);">
+        New intern? <a href="register.html" style="font-weight: 700; color: var(--color-primary);">Register your Intern ID</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Forgot Password Modal -->
+  <div class="modal-backdrop" id="forgotPasswordModal">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <h3 class="modal-title">Reset Password</h3>
+        <button class="modal-close" id="closeForgotModalBtn">&times;</button>
+      </div>
+      <div class="modal-body">
+        <p style="font-size: 0.875rem; color: var(--color-slate-600); margin-bottom: 1rem;">
+          Enter your registered email address to receive password reset instructions. For Interns, password resets can be requested from your Administrator.
+        </p>
+        <div class="form-group">
+          <label class="form-label" for="resetEmail">Email Address</label>
+          <input type="email" id="resetEmail" class="form-input" style="width: 100%;" placeholder="admin@system.local" />
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" id="cancelResetBtn">Cancel</button>
+        <button type="button" class="btn btn-primary" id="sendResetBtn">Send Reset Link</button>
+      </div>
+    </div>
+  </div>
+
+  <script type="module">
+    import { handleLogin, handleResetPassword } from "./js/auth.js";
+    import { showToast } from "./js/firebase-config.js";
+
+    let activePortalMode = "intern"; // "intern" or "admin"
+
+    const tabIntern = document.getElementById("tabIntern");
+    const tabAdmin = document.getElementById("tabAdmin");
+    const identifierLabel = document.getElementById("identifierLabel");
+    const identifierInput = document.getElementById("loginIdentifier");
+    const identifierHint = document.getElementById("identifierHint");
+    const submitBtn = document.getElementById("submitLoginBtn");
+    const registerLinkContainer = document.getElementById("registerLinkContainer");
+    const passInput = document.getElementById("loginPassword");
+    const loginForm = document.getElementById("loginForm");
+
+    // Tab switching logic
+    tabIntern.addEventListener("click", () => {
+      activePortalMode = "intern";
+      tabIntern.style.background = "white";
+      tabIntern.style.color = "var(--color-primary)";
+      tabIntern.style.fontWeight = "700";
+      tabIntern.style.boxShadow = "0 1px 3px rgba(0,0,0,0.08)";
+
+      tabAdmin.style.background = "transparent";
+      tabAdmin.style.color = "var(--color-slate-600)";
+      tabAdmin.style.fontWeight = "600";
+      tabAdmin.style.boxShadow = "none";
+
+      identifierLabel.textContent = "Intern ID";
+      identifierInput.placeholder = "e.g. SWDI-006";
+      identifierInput.style.textTransform = "uppercase";
+      identifierInput.value = "";
+      identifierHint.textContent = "Enter your assigned Intern ID (Format: SWDI-001, SWDI-002, etc.)";
+      submitBtn.textContent = "Sign In as Intern";
+      registerLinkContainer.style.display = "block";
+    });
+
+    tabAdmin.addEventListener("click", () => {
+      activePortalMode = "admin";
+      tabAdmin.style.background = "white";
+      tabAdmin.style.color = "var(--color-danger, #dc2626)";
+      tabAdmin.style.fontWeight = "700";
+      tabAdmin.style.boxShadow = "0 1px 3px rgba(0,0,0,0.08)";
+
+      tabIntern.style.background = "transparent";
+      tabIntern.style.color = "var(--color-slate-600)";
+      tabIntern.style.fontWeight = "600";
+      tabIntern.style.boxShadow = "none";
+
+      identifierLabel.textContent = "Administrator Email";
+      identifierInput.placeholder = "admin@system.local";
+      identifierInput.style.textTransform = "none";
+      identifierInput.value = "";
+      identifierHint.textContent = "Admin credentials require authorized role: 'admin' in Firestore.";
+      submitBtn.textContent = "Sign In to Admin Portal";
+      registerLinkContainer.style.display = "none";
+    });
+
+    // Toggle Password Visibility
+    const togglePasswordBtn = document.getElementById("togglePasswordBtn");
+    togglePasswordBtn.addEventListener("click", () => {
+      const isPassword = passInput.getAttribute("type") === "password";
+      passInput.setAttribute("type", isPassword ? "text" : "password");
+    });
+
+    // Login Form Submission
+    loginForm.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const identifier = identifierInput.value.trim();
+      const password = passInput.value;
+
+      if (!identifier || !password) {
+        showToast("Please complete all fields.", "warning");
+        return;
+      }
+
+      if (activePortalMode === "intern") {
+        const pattern = /^SWDI-\d{3,}$/i;
+        if (!pattern.test(identifier)) {
+          showToast("Intern ID must match format SWDI-001, SWDI-002, etc.", "error");
+          identifierInput.focus();
+          return;
+        }
+      }
+
+      submitBtn.disabled = true;
+      submitBtn.textContent = "Authenticating...";
+
+      try {
+        const res = await handleLogin(identifier, password, activePortalMode);
+        if (!res.success) {
+          submitBtn.disabled = false;
+          submitBtn.textContent = activePortalMode === "intern" ? "Sign In as Intern" : "Sign In to Admin Portal";
+        }
+      } catch (err) {
+        console.error("Login error:", err);
+        submitBtn.disabled = false;
+        submitBtn.textContent = activePortalMode === "intern" ? "Sign In as Intern" : "Sign In to Admin Portal";
+      }
+    });
+
+    // Forgot Password Modal
+    const forgotModal = document.getElementById("forgotPasswordModal");
+    const forgotBtn = document.getElementById("forgotPasswordBtn");
+    const closeForgotBtn = document.getElementById("closeForgotModalBtn");
+    const cancelResetBtn = document.getElementById("cancelResetBtn");
+    const sendResetBtn = document.getElementById("sendResetBtn");
+    const resetEmailInput = document.getElementById("resetEmail");
+
+    forgotBtn.addEventListener("click", () => {
+      forgotModal.classList.add("show");
+    });
+
+    [closeForgotBtn, cancelResetBtn].forEach(btn => {
+      btn.addEventListener("click", () => {
+        forgotModal.classList.remove("show");
+      });
+    });
+
+    sendResetBtn.addEventListener("click", async () => {
+      const email = resetEmailInput.value.trim();
+      if (!email) {
+        showToast("Please enter an email address.", "warning");
+        return;
+      }
+      sendResetBtn.disabled = true;
+      sendResetBtn.textContent = "Sending...";
+      await handleResetPassword(email);
+      sendResetBtn.disabled = false;
+      sendResetBtn.textContent = "Send Reset Link";
+      forgotModal.classList.remove("show");
+    });
+  </script>
+</body>
+</html>

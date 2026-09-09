@@ -1,0 +1,75 @@
+{
+  "entities": {
+    "users": {
+      "description": "User profile with role-based access",
+      "fields": {
+        "internId": { "type": "string", "description": "Intern ID (e.g., SWDI-001, SWDI-006)" },
+        "name": { "type": "string", "description": "Display name or Intern ID" },
+        "email": { "type": "string", "description": "Email address" },
+        "role": { "type": "string", "description": "'admin' or 'member'" },
+        "department": { "type": "string", "description": "Department or team" },
+        "phone": { "type": "string", "description": "Contact number" },
+        "status": { "type": "string", "description": "'active' or 'inactive'" },
+        "createdAt": { "type": "string", "description": "Creation ISO date" }
+      }
+    },
+    "attendance": {
+      "description": "Daily attendance records",
+      "fields": {
+        "userId": { "type": "string", "description": "User UID" },
+        "userName": { "type": "string", "description": "User name" },
+        "userEmail": { "type": "string", "description": "User email" },
+        "date": { "type": "string", "description": "YYYY-MM-DD" },
+        "status": { "type": "string", "description": "'Present' or 'Absent'" },
+        "checkIn": { "type": "string", "description": "Check-in time string (e.g., 09:30 AM)" },
+        "notes": { "type": "string", "description": "Optional notes" },
+        "createdAt": { "type": "string", "description": "Creation ISO timestamp" }
+      }
+    },
+    "tasks": {
+      "description": "Distributed tasks for members",
+      "fields": {
+        "title": { "type": "string", "description": "Task title" },
+        "description": { "type": "string", "description": "Detailed task instructions" },
+        "assignedTo": { "type": "string", "description": "Assigned member UID" },
+        "assignedToInternId": { "type": "string", "description": "Assigned Intern ID (e.g., SWDI-006)" },
+        "assignedToName": { "type": "string", "description": "Assigned member display name" },
+        "assignedToEmail": { "type": "string", "description": "Assigned member email" },
+        "assignedBy": { "type": "string", "description": "Admin UID" },
+        "assignedByName": { "type": "string", "description": "Admin name" },
+        "priority": { "type": "string", "description": "'Low', 'Medium', or 'High'" },
+        "deadline": { "type": "string", "description": "YYYY-MM-DD" },
+        "status": { "type": "string", "description": "'ASSIGNED', 'IN PROGRESS', 'SUBMITTED', 'REJECTED', 'COMPLETED'" },
+        "createdAt": { "type": "string", "description": "Creation timestamp" }
+      }
+    },
+    "submissions": {
+      "description": "Member task submissions",
+      "fields": {
+        "taskId": { "type": "string", "description": "Task document ID" },
+        "taskTitle": { "type": "string", "description": "Task title" },
+        "userId": { "type": "string", "description": "Submitting member UID" },
+        "userName": { "type": "string", "description": "Submitting member name" },
+        "description": { "type": "string", "description": "Work description / comments" },
+        "githubUrl": { "type": "string", "description": "GitHub or project link" },
+        "fileUrl": { "type": "string", "description": "Uploaded file URL in Firebase Storage" },
+        "fileName": { "type": "string", "description": "Original file name" },
+        "submittedAt": { "type": "string", "description": "Submission ISO date" },
+        "reviewStatus": { "type": "string", "description": "'PENDING', 'APPROVED', or 'REJECTED'" },
+        "reviewComments": { "type": "string", "description": "Admin review feedback" }
+      }
+    },
+    "notifications": {
+      "description": "System and task notifications",
+      "fields": {
+        "userId": { "type": "string", "description": "Target user UID" },
+        "type": { "type": "string", "description": "Notification category" },
+        "title": { "type": "string", "description": "Title" },
+        "message": { "type": "string", "description": "Body message" },
+        "read": { "type": "boolean", "description": "Whether read" },
+        "link": { "type": "string", "description": "Target page or task URL" },
+        "createdAt": { "type": "string", "description": "ISO date" }
+      }
+    }
+  }
+}
