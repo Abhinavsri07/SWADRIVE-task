@@ -177,10 +177,8 @@
       }
 
       if (activePortalMode === "intern") {
-    const pattern = /^[a-zA-Z0-9]+$/;
-
-    if (!pattern.test(identifier)) {
-        showToast("Intern ID must contain only letters and numbers.", "error");
+    if (identifier.length < 6) {
+        showToast("Intern ID must be at least 6 characters.", "error");
         identifierInput.focus();
         return;
     }
