@@ -16,7 +16,7 @@
           <span style="width: 32px; height: 32px; border-radius: var(--radius-sm); background: var(--color-primary); color: white; display: flex; align-items: center; justify-content: center; font-size: 1rem;">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/><path d="m9 16 2 2 4-4"/></svg>
           </span>
-          <span>TaskFlow</span>
+          <span>Swadrive</span>
         </a>
         <h2 style="font-size: 1.45rem; font-weight: 700; color: var(--color-slate-800);">Workspace Sign In</h2>
         <p class="auth-subtitle">Secure access to Attendance &amp; Task Distribution</p>
@@ -177,13 +177,14 @@
       }
 
       if (activePortalMode === "intern") {
-        const pattern = /^SWDI-\d{3,}$/i;
-        if (!pattern.test(identifier)) {
-          showToast("Intern ID must match format SWDI-001, SWDI-002, etc.", "error");
-          identifierInput.focus();
-          return;
-        }
-      }
+    const pattern = /^[a-zA-Z0-9]+$/;
+
+    if (!pattern.test(identifier)) {
+        showToast("Intern ID must contain only letters and numbers.", "error");
+        identifierInput.focus();
+        return;
+    }
+  }
 
       submitBtn.disabled = true;
       submitBtn.textContent = "Authenticating...";

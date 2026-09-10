@@ -3,209 +3,755 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Attendance &amp; Task Distribution Management</title>
-  <meta name="description" content="Attendance and task distribution management system with role-based access for Admins and Members." />
-  <meta property="og:title" content="Attendance &amp; Task Distribution Management" />
-  <meta property="og:description" content="Attendance and task distribution management system with role-based access for Admins and Members." />
+  <title>Swadrive - Attendance &amp; Task Management</title>
+  <meta name="description" content="Welcome to Swadrive. Direct sign in and registration portal for Attendance and Task Distribution." />
+  <meta property="og:title" content="Swadrive - Attendance &amp; Task Management" />
+  <meta property="og:description" content="Welcome to Swadrive. Direct sign in and registration portal for Attendance and Task Distribution." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css" />
+  <style>
+    /* Reset & Base for split layout */
+    body, html {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background-color: #ffffff;
+      overflow-x: hidden;
+    }
+
+    .swadrive-container {
+      display: flex;
+      min-height: 100vh;
+      width: 100vw;
+    }
+
+    /* Left Visual Panel */
+    .swadrive-left-pane {
+      flex: 1.05;
+      background: linear-gradient(145deg, #2563eb 0%, #1d4ed8 45%, #1e3a8a 100%);
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 3.5rem 3.5rem 2.5rem;
+      color: #ffffff;
+      box-sizing: border-box;
+    }
+
+    /* Ambient wireframe curves & geometry */
+    .bg-wireframe-curves {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 1;
+      opacity: 0.9;
+    }
+
+    .left-content {
+      position: relative;
+      z-index: 2;
+    }
+
+    .starburst-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 58px;
+      height: 58px;
+      margin-bottom: 3.5rem;
+      filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.15));
+    }
+
+    .fancy-welcome-block {
+      margin-top: 1rem;
+    }
+
+    .fancy-sub {
+      display: block;
+      font-family: 'Outfit', sans-serif;
+      font-size: 2.85rem;
+      font-weight: 700;
+      color: #ffffff;
+      letter-spacing: -0.02em;
+      line-height: 1.15;
+      text-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+    }
+
+    .fancy-brand {
+      display: inline-block;
+      font-family: 'Outfit', sans-serif;
+      font-size: 3.65rem;
+      font-weight: 800;
+      color: #ffffff;
+      letter-spacing: -0.03em;
+      line-height: 1.15;
+      margin-top: 0.2rem;
+      text-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+    }
+
+    .wave-emoji {
+      display: inline-block;
+      font-size: 3.2rem;
+      animation: waveAnimation 2.2s infinite ease-in-out;
+      transform-origin: 70% 70%;
+      margin-left: 0.35rem;
+    }
+
+    @keyframes waveAnimation {
+      0% { transform: rotate(0deg); }
+      10% { transform: rotate(14deg); }
+      20% { transform: rotate(-8deg); }
+      30% { transform: rotate(14deg); }
+      40% { transform: rotate(-4deg); }
+      50% { transform: rotate(10deg); }
+      60% { transform: rotate(0deg); }
+      100% { transform: rotate(0deg); }
+    }
+
+    .left-footer {
+      position: relative;
+      z-index: 2;
+      font-size: 0.85rem;
+      color: rgba(255, 255, 255, 0.7);
+      margin-top: 3rem;
+    }
+
+    /* Right Auth Panel */
+    .swadrive-right-pane {
+      flex: 1;
+      background: #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 3rem 2.5rem;
+      box-sizing: border-box;
+      position: relative;
+    }
+
+    .auth-box {
+      width: 100%;
+      max-width: 410px;
+    }
+
+    .brand-title-top {
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.65rem;
+      font-weight: 800;
+      color: #0f172a;
+      letter-spacing: -0.02em;
+      margin-bottom: 2.25rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .brand-title-top .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #2563eb;
+      display: inline-block;
+    }
+
+    .auth-heading {
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.95rem;
+      font-weight: 800;
+      color: #0f172a;
+      letter-spacing: -0.02em;
+      margin-bottom: 0.4rem;
+      line-height: 1.2;
+    }
+
+    .auth-toggle-subtext {
+      font-size: 0.9rem;
+      color: #64748b;
+      margin-bottom: 1.75rem;
+      line-height: 1.5;
+    }
+
+    .auth-toggle-subtext a {
+      color: #0f172a;
+      font-weight: 700;
+      text-decoration: underline;
+      cursor: pointer;
+      margin-left: 0.2rem;
+    }
+
+    .auth-toggle-subtext a:hover {
+      color: #2563eb;
+    }
+
+    /* Mode Pill (Intern vs Admin) */
+    .role-toggle-group {
+      display: flex;
+      background: #f1f5f9;
+      border-radius: 10px;
+      padding: 0.25rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .role-toggle-btn {
+      flex: 1;
+      border: none;
+      padding: 0.55rem 0.75rem;
+      font-size: 0.85rem;
+      font-weight: 600;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      background: transparent;
+      color: #64748b;
+    }
+
+    .role-toggle-btn.active {
+      background: #ffffff;
+      color: #0f172a;
+      box-shadow: 0 1px 3px rgba(15, 23, 42, 0.08);
+      font-weight: 700;
+    }
+
+    /* Form Fields */
+    .input-group {
+      margin-bottom: 1.25rem;
+    }
+
+    .input-label {
+      display: block;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: #334155;
+      margin-bottom: 0.4rem;
+    }
+
+    .custom-input {
+      width: 100%;
+      box-sizing: border-box;
+      padding: 0.8rem 1rem;
+      font-size: 0.925rem;
+      border: 1px solid #cbd5e1;
+      border-radius: 8px;
+      background: #ffffff;
+      color: #0f172a;
+      outline: none;
+      transition: border-color 0.15s ease, box-shadow 0.15s ease;
+      font-family: inherit;
+    }
+
+    .custom-input:focus {
+      border-color: #2563eb;
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+    }
+
+    .custom-input::placeholder {
+      color: #94a3b8;
+      font-size: 0.875rem;
+    }
+
+    .field-hint {
+      display: block;
+      font-size: 0.75rem;
+      color: #64748b;
+      margin-top: 0.35rem;
+    }
+
+    /* Submit Button (Matching the screenshot's dark button style) */
+    .btn-submit-action {
+      width: 100%;
+      background: #0f172a;
+      color: #ffffff;
+      border: none;
+      border-radius: 8px;
+      padding: 0.85rem 1.25rem;
+      font-size: 0.95rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background-color 0.15s ease, transform 0.1s ease;
+      margin-top: 0.75rem;
+    }
+
+    .btn-submit-action:hover {
+      background: #1e293b;
+    }
+
+    .btn-submit-action:active {
+      transform: scale(0.99);
+    }
+
+    .btn-submit-action:disabled {
+      opacity: 0.65;
+      cursor: not-allowed;
+    }
+
+    .forgot-link-wrap {
+      text-align: center;
+      margin-top: 1.25rem;
+      font-size: 0.85rem;
+      color: #64748b;
+    }
+
+    .forgot-link-wrap a {
+      color: #0f172a;
+      font-weight: 600;
+      text-decoration: underline;
+      cursor: pointer;
+    }
+
+    .forgot-link-wrap a:hover {
+      color: #2563eb;
+    }
+
+    /* Responsive Stacking */
+    @media (max-width: 900px) {
+      .swadrive-container {
+        flex-direction: column;
+      }
+      .swadrive-left-pane {
+        padding: 3rem 1.75rem 2.5rem;
+        flex: none;
+      }
+      .starburst-badge {
+        margin-bottom: 1.5rem;
+      }
+      .fancy-sub {
+        font-size: 2.1rem;
+      }
+      .fancy-brand {
+        font-size: 2.7rem;
+      }
+      .wave-emoji {
+        font-size: 2.4rem;
+      }
+      .left-footer {
+        display: none;
+      }
+      .swadrive-right-pane {
+        padding: 2.5rem 1.5rem 3.5rem;
+      }
+    }
+  </style>
 </head>
 <body>
-  <!-- Global Toast Notification Container -->
+  <!-- Global Toast Notifications -->
   <div id="toast-container"></div>
 
-  <!-- Navigation Header -->
-  <header style="background: white; border-bottom: 1px solid var(--color-slate-200); position: sticky; top: 0; z-index: 100;">
-    <div style="max-width: 1200px; margin: 0 auto; padding: 0.85rem 1.5rem; display: flex; align-items: center; justify-content: space-between;">
-      <a href="index.html" style="display: flex; align-items: center; gap: 0.65rem; color: var(--color-dark); font-weight: 800; font-size: 1.15rem; text-decoration: none;">
-        <span style="width: 34px; height: 34px; border-radius: var(--radius-sm); background: var(--color-primary); color: white; display: flex; align-items: center; justify-content: center; font-weight: bold;">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/><path d="m9 16 2 2 4-4"/></svg>
-        </span>
-        <span>TaskFlow &amp; Attendance</span>
-      </a>
+  <div class="swadrive-container">
+    <!-- Left Pane: Fancy Welcome & Wireframe Geometry -->
+    <div class="swadrive-left-pane">
+      <!-- Decorative SVG wireframe curves echoing the screenshot -->
+      <svg class="bg-wireframe-curves" viewBox="0 0 600 600" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+        <path d="M-50 220 C 140 70, 360 420, 700 220" stroke="rgba(255,255,255,0.18)" stroke-width="1.5" fill="none"/>
+        <path d="M-20 270 C 170 120, 390 450, 750 270" stroke="rgba(255,255,255,0.15)" stroke-width="1.5" fill="none"/>
+        <path d="M20 320 C 200 170, 420 480, 800 320" stroke="rgba(255,255,255,0.12)" stroke-width="1.5" fill="none"/>
+        <path d="M60 370 C 230 220, 450 510, 850 370" stroke="rgba(255,255,255,0.09)" stroke-width="1.5" fill="none"/>
+        
+        <!-- Rotated structural wireframe cards like screenshot -->
+        <rect x="220" y="70" width="340" height="400" rx="36" transform="rotate(18 390 270)" stroke="rgba(255,255,255,0.16)" stroke-width="1.5" fill="none"/>
+        <rect x="250" y="90" width="340" height="400" rx="36" transform="rotate(25 420 290)" stroke="rgba(255,255,255,0.13)" stroke-width="1.5" fill="none"/>
+        <rect x="280" y="110" width="340" height="400" rx="36" transform="rotate(32 450 310)" stroke="rgba(255,255,255,0.09)" stroke-width="1.5" fill="none"/>
+      </svg>
 
-      <div style="display: flex; align-items: center; gap: 0.85rem;">
-        <a href="login.html" class="btn btn-secondary btn-sm" id="navLoginBtn">Sign In</a>
-        <a href="register.html" class="btn btn-primary btn-sm" id="navRegisterBtn">Register Free</a>
+      <div class="left-content">
+        <!-- Starburst Icon matching the screenshot -->
+        <div class="starburst-badge">
+          <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2.75" stroke-linecap="round">
+            <line x1="12" y1="2" x2="12" y2="22" />
+            <line x1="2" y1="12" x2="22" y2="12" />
+            <line x1="4.93" y1="4.93" x2="19.07" y2="19.07" />
+            <line x1="19.07" y1="4.93" x2="4.93" y2="19.07" />
+          </svg>
+        </div>
+
+        <!-- Fancy Display Welcome -->
+        <div class="fancy-welcome-block">
+          <span class="fancy-sub">Welcome to</span>
+          <div class="fancy-brand">Swadrive! <span class="wave-emoji">👋</span></div>
+        </div>
+      </div>
+
+      <div class="left-footer">
+        &copy; 2026 Swadrive. All rights reserved.
       </div>
     </div>
-  </header>
 
-  <!-- Hero Section -->
-  <section class="hero-section">
-    <div style="max-width: 900px; margin: 0 auto;">
-      <div style="display: inline-flex; align-items: center; gap: 0.5rem; background: var(--color-primary-light); color: var(--color-primary-dark); padding: 0.35rem 0.85rem; border-radius: var(--radius-pill); font-size: 0.8rem; font-weight: 700; margin-bottom: 1.25rem;">
-        <span style="width: 8px; height: 8px; border-radius: 50%; background: var(--color-primary);"></span>
-        Full-Stack Production System &bull; Vanilla JS &amp; Firebase
-      </div>
-      <h1 class="hero-title">Attendance Tracking &amp; Task Distribution Made Seamless</h1>
-      <p class="hero-subtitle">
-        Empower managers, admins, and intern teams with automated daily attendance tracking, a dedicated Mon&ndash;Sat weekly matrix with instant percentage calculations, and end-to-end task review workflows with Firebase Storage attachments.
-      </p>
+    <!-- Right Pane: Direct Login / Register (No Website Briefing) -->
+    <div class="swadrive-right-pane">
+      <div class="auth-box">
+        <!-- Top Brand Title -->
+        <div class="brand-title-top">
+          <span>Swadrive</span>
+          <span class="dot"></span>
+        </div>
 
-      <div class="hero-actions">
-        <a href="login.html" class="btn btn-primary btn-lg" id="heroGetStartedBtn">
-          <span>Sign In to Dashboard</span>
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
-        </a>
-        <a href="register.html" class="btn btn-secondary btn-lg" id="heroRegisterBtn">
-          <span>Create Account</span>
-        </a>
-      </div>
-    </div>
-  </section>
+        <!-- Dynamic Header -->
+        <h2 id="authHeading" class="auth-heading">Welcome Back!</h2>
+        
+        <div id="authToggleSubtext" class="auth-toggle-subtext">
+          <span id="authToggleQuestion">Don't have an account?</span>
+          <a id="btnAuthSwitch">Create a new account now.</a>
+        </div>
 
-  <!-- Interactive Role Overview Section -->
-  <main style="max-width: 1200px; margin: 0 auto; padding: 3rem 1.5rem;">
-    <div style="text-align: center; margin-bottom: 2.5rem;">
-      <h2 style="font-size: 1.85rem; font-weight: 800; color: var(--color-dark); margin-bottom: 0.5rem;">Tailored for Every Role</h2>
-      <p style="color: var(--color-slate-500); font-size: 1rem;">Role-based security rules keep team workflows clean, focused, and organized.</p>
-    </div>
-
-    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 2rem;">
-      <!-- Admin Card -->
-      <div class="card" style="border-top: 4px solid var(--color-primary); box-shadow: var(--shadow-md);">
-        <div class="card-body">
-          <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.25rem;">
-            <div style="width: 48px; height: 48px; border-radius: var(--radius-md); background: var(--color-primary-light); color: var(--color-primary); display: flex; align-items: center; justify-content: center;">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-            </div>
-            <span class="badge" style="background: var(--color-primary-light); color: var(--color-primary);">Admin Supervisor</span>
+        <!-- =================== LOGIN VIEW =================== -->
+        <div id="loginViewSection">
+          <!-- Role Mode Toggle: Intern vs Admin -->
+          <div class="role-toggle-group">
+            <button type="button" id="tabInternLogin" class="role-toggle-btn active">Intern Login</button>
+            <button type="button" id="tabAdminLogin" class="role-toggle-btn">Admin Portal</button>
           </div>
 
-          <h3 style="font-size: 1.3rem; font-weight: 700; color: var(--color-slate-800); margin-bottom: 0.75rem;">Admin Dashboard</h3>
-          <p style="color: var(--color-slate-600); font-size: 0.9rem; margin-bottom: 1.25rem;">
-            Complete supervision over attendance logs, weekly matrices, task assignment, and submission approvals.
-          </p>
-
-          <ul style="list-style: none; display: flex; flex-direction: column; gap: 0.65rem; font-size: 0.875rem; color: var(--color-slate-700); margin-bottom: 1.75rem;">
-            <li style="display: flex; align-items: center; gap: 0.5rem;">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#059669" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
-              <span>View live Present/Absent stats &amp; member headcount</span>
-            </li>
-            <li style="display: flex; align-items: center; gap: 0.5rem;">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#059669" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
-              <span>Weekly Attendance Matrix with Mon&ndash;Sat breakdown</span>
-            </li>
-            <li style="display: flex; align-items: center; gap: 0.5rem;">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#059669" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
-              <span>Create, assign, edit, and delete priority tasks</span>
-            </li>
-            <li style="display: flex; align-items: center; gap: 0.5rem;">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#059669" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
-              <span>Review submissions: Approve or Reject with feedback</span>
-            </li>
-            <li style="display: flex; align-items: center; gap: 0.5rem;">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#059669" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
-              <span>Export attendance &amp; task analytics to CSV</span>
-            </li>
-          </ul>
-
-          <a href="login.html?role=admin" class="btn btn-primary" style="width: 100%;">Sign In as Admin</a>
-        </div>
-      </div>
-
-      <!-- Member Card -->
-      <div class="card" style="border-top: 4px solid var(--color-present); box-shadow: var(--shadow-md);">
-        <div class="card-body">
-          <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.25rem;">
-            <div style="width: 48px; height: 48px; border-radius: var(--radius-md); background: var(--color-present-bg); color: var(--color-present); display: flex; align-items: center; justify-content: center;">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          <form id="mainLoginForm">
+            <!-- Identifier Field -->
+            <div class="input-group">
+              <label class="input-label" id="labelIdentifier" for="inputIdentifier">Intern ID</label>
+              <input 
+                type="text" 
+                id="inputIdentifier" 
+                class="custom-input" 
+                style="text-transform: uppercase;" 
+                placeholder="e.g. SWDI-006" 
+                required 
+                autocomplete="username" 
+              />
+              <span id="hintIdentifier" class="field-hint">Enter your assigned Intern ID (Format: SWDI-001, SWDI-002...)</span>
             </div>
-            <span class="badge" style="background: var(--color-present-bg); color: var(--color-present);">Member / Intern</span>
+
+            <!-- Password Field -->
+            <div class="input-group">
+              <label class="input-label" for="inputPassword">Password</label>
+              <div style="position: relative;">
+                <input 
+                  type="password" 
+                  id="inputPassword" 
+                  class="custom-input" 
+                  style="padding-right: 2.75rem;" 
+                  placeholder="&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;" 
+                  required 
+                  autocomplete="current-password" 
+                />
+                <button 
+                  type="button" 
+                  id="btnTogglePassword" 
+                  style="position: absolute; right: 0.75rem; top: 50%; transform: translateY(-50%); background: none; border: none; color: #94a3b8; cursor: pointer; padding: 0.2rem;" 
+                  aria-label="Toggle password"
+                >
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                </button>
+              </div>
+            </div>
+
+            <button type="submit" class="btn-submit-action" id="btnLoginSubmit">
+              Login Now
+            </button>
+          </form>
+
+          <div class="forgot-link-wrap">
+            Forgot password? <a id="btnOpenForgotModal">Click here</a>
           </div>
+        </div>
 
-          <h3 style="font-size: 1.3rem; font-weight: 700; color: var(--color-slate-800); margin-bottom: 0.75rem;">Member Portal</h3>
-          <p style="color: var(--color-slate-600); font-size: 0.9rem; margin-bottom: 1.25rem;">
-            Personal dashboard for 1-click daily check-in, tracking attendance streaks, and submitting assigned tasks.
-          </p>
+        <!-- =================== REGISTER VIEW =================== -->
+        <div id="registerViewSection" style="display: none;">
+          <form id="mainRegisterForm">
+            <div class="input-group">
+              <label class="input-label" for="regInputInternId">Intern ID *</label>
+              <input 
+                type="text" 
+                id="regInputInternId" 
+                class="custom-input" 
+                style="text-transform: uppercase; font-family: monospace; font-weight: 600;" 
+                placeholder="e.g. SWDI-006" 
+                required 
+                pattern="^SWDI-\d{3,}$"
+                title="Format must be SWDI-001, SWDI-002, etc."
+                autocomplete="off" 
+              />
+              <span class="field-hint">Assigned format: SWDI-001, SWDI-002, etc.</span>
+            </div>
 
-          <ul style="list-style: none; display: flex; flex-direction: column; gap: 0.65rem; font-size: 0.875rem; color: var(--color-slate-700); margin-bottom: 1.75rem;">
-            <li style="display: flex; align-items: center; gap: 0.5rem;">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#059669" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
-              <span>1-Click Daily Attendance (prevents duplicate entries)</span>
-            </li>
-            <li style="display: flex; align-items: center; gap: 0.5rem;">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#059669" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
-              <span>Personal attendance history and weekly attendance view</span>
-            </li>
-            <li style="display: flex; align-items: center; gap: 0.5rem;">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#059669" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
-              <span>Active task workflow: ASSIGNED &rarr; IN PROGRESS</span>
-            </li>
-            <li style="display: flex; align-items: center; gap: 0.5rem;">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#059669" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
-              <span>Submit tasks with GitHub URL, notes &amp; file attachments</span>
-            </li>
-            <li style="display: flex; align-items: center; gap: 0.5rem;">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#059669" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
-              <span>Resume work &amp; resubmit if revisions requested</span>
-            </li>
-          </ul>
+            <div class="input-group">
+              <label class="input-label" for="regInputPassword">Password *</label>
+              <input 
+                type="password" 
+                id="regInputPassword" 
+                class="custom-input" 
+                placeholder="Minimum 6 characters" 
+                required 
+                minlength="6" 
+                autocomplete="new-password" 
+              />
+            </div>
 
-          <a href="login.html?role=member" class="btn btn-success" style="width: 100%;">Sign In as Member</a>
+            <div class="input-group">
+              <label class="input-label" for="regInputConfirmPassword">Confirm Password *</label>
+              <input 
+                type="password" 
+                id="regInputConfirmPassword" 
+                class="custom-input" 
+                placeholder="Confirm your password" 
+                required 
+                minlength="6" 
+                autocomplete="new-password" 
+              />
+            </div>
+
+            <button type="submit" class="btn-submit-action" id="btnRegisterSubmit">
+              Create Account Now
+            </button>
+          </form>
         </div>
       </div>
     </div>
+  </div>
 
-    <!-- Core Features Grid -->
-    <div class="features-grid">
-      <div class="feature-card">
-        <div class="feature-icon">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-        </div>
-        <h4 style="font-size: 1.1rem; font-weight: 700; margin-bottom: 0.4rem;">Weekly Attendance Matrix</h4>
-        <p style="font-size: 0.85rem; color: var(--color-slate-600);">
-          Dedicated Mon&ndash;Sat matrix displaying individual P/A status badges, total attendance tallies, and auto-computed percentage rates.
-        </p>
+  <!-- Forgot Password Modal -->
+  <div class="modal-backdrop" id="forgotPasswordModal">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <h3 class="modal-title">Reset Password</h3>
+        <button class="modal-close" id="btnCloseForgotModal">&times;</button>
       </div>
-
-      <div class="feature-card">
-        <div class="feature-icon" style="background: var(--color-submitted-bg); color: var(--color-submitted);">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
-        </div>
-        <h4 style="font-size: 1.1rem; font-weight: 700; margin-bottom: 0.4rem;">Robust Task Workflow</h4>
-        <p style="font-size: 0.85rem; color: var(--color-slate-600);">
-          Full status lifecycle: ASSIGNED &rarr; IN PROGRESS &rarr; SUBMITTED &rarr; COMPLETED, with revision loops for rejected tasks.
+      <div class="modal-body">
+        <p style="font-size: 0.875rem; color: #475569; margin-bottom: 1rem;">
+          Enter your registered email address to receive reset instructions. For Intern accounts, password resets can also be requested directly through your administrator.
         </p>
+        <div class="input-group">
+          <label class="input-label" for="resetEmailInput">Email Address</label>
+          <input type="email" id="resetEmailInput" class="custom-input" placeholder="admin@system.local" />
+        </div>
       </div>
-
-      <div class="feature-card">
-        <div class="feature-icon" style="background: var(--color-present-bg); color: var(--color-present);">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
-        </div>
-        <h4 style="font-size: 1.1rem; font-weight: 700; margin-bottom: 0.4rem;">Cloud Storage &amp; Files</h4>
-        <p style="font-size: 0.85rem; color: var(--color-slate-600);">
-          Direct uploads powered by Firebase Storage for code zips, PDFs, designs, and documentation attachments.
-        </p>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" id="btnCancelForgot">Cancel</button>
+        <button type="button" class="btn btn-primary" id="btnSendReset">Send Reset Link</button>
       </div>
     </div>
-  </main>
-
-  <footer style="background: var(--color-slate-800); color: var(--color-slate-400); padding: 2rem 1.5rem; text-align: center; font-size: 0.875rem;">
-    <div style="max-width: 1200px; margin: 0 auto;">
-      <p style="color: white; font-weight: 600; margin-bottom: 0.5rem;">Attendance &amp; Task Distribution Management System</p>
-      <p>Built with Pure HTML5, CSS3, Vanilla JavaScript, and Firebase (Authentication, Firestore, Storage).</p>
-    </div>
-  </footer>
+  </div>
 
   <script type="module">
-    import { auth, onAuthStateChanged } from "./js/firebase-config.js";
+    import { handleLogin, registerIntern, handleResetPassword } from "./js/auth.js";
+    import { auth, onAuthStateChanged, showToast } from "./js/firebase-config.js";
 
-    // Check if already logged in and update header
+    // Auto-redirect if already logged in
     onAuthStateChanged(auth, (user) => {
       if (user) {
-        const loginBtn = document.getElementById("navLoginBtn");
-        const regBtn = document.getElementById("navRegisterBtn");
-        if (loginBtn) {
-          loginBtn.textContent = "Go to Dashboard";
-          loginBtn.href = user.email && user.email.includes("admin") ? "admin.html" : "member.html";
+        const isAdmin = user.email && user.email.toLowerCase().includes("admin");
+        window.location.replace(isAdmin ? "admin.html" : "member.html");
+      }
+    });
+
+    let currentMode = "login"; // "login" or "register"
+    let activeLoginPortal = "intern"; // "intern" or "admin"
+
+    // Elements
+    const authHeading = document.getElementById("authHeading");
+    const authToggleQuestion = document.getElementById("authToggleQuestion");
+    const btnAuthSwitch = document.getElementById("btnAuthSwitch");
+    const loginView = document.getElementById("loginViewSection");
+    const registerView = document.getElementById("registerViewSection");
+
+    const tabInternLogin = document.getElementById("tabInternLogin");
+    const tabAdminLogin = document.getElementById("tabAdminLogin");
+    const labelIdentifier = document.getElementById("labelIdentifier");
+    const inputIdentifier = document.getElementById("inputIdentifier");
+    const hintIdentifier = document.getElementById("hintIdentifier");
+    const btnLoginSubmit = document.getElementById("btnLoginSubmit");
+    const mainLoginForm = document.getElementById("mainLoginForm");
+    const inputPassword = document.getElementById("inputPassword");
+    const btnTogglePassword = document.getElementById("btnTogglePassword");
+
+    const mainRegisterForm = document.getElementById("mainRegisterForm");
+    const regInputInternId = document.getElementById("regInputInternId");
+    const regInputPassword = document.getElementById("regInputPassword");
+    const regInputConfirmPassword = document.getElementById("regInputConfirmPassword");
+    const btnRegisterSubmit = document.getElementById("btnRegisterSubmit");
+
+    // Modal elements
+    const forgotModal = document.getElementById("forgotPasswordModal");
+    const btnOpenForgotModal = document.getElementById("btnOpenForgotModal");
+    const btnCloseForgotModal = document.getElementById("btnCloseForgotModal");
+    const btnCancelForgot = document.getElementById("btnCancelForgot");
+    const btnSendReset = document.getElementById("btnSendReset");
+    const resetEmailInput = document.getElementById("resetEmailInput");
+
+    // Toggle Login vs Register View
+    function setView(mode) {
+      currentMode = mode;
+      if (mode === "register") {
+        authHeading.textContent = "Create an Account";
+        authToggleQuestion.textContent = "Already have an account?";
+        btnAuthSwitch.textContent = "Sign in now.";
+        loginView.style.display = "none";
+        registerView.style.display = "block";
+      } else {
+        authHeading.textContent = "Welcome Back!";
+        authToggleQuestion.textContent = "Don't have an account?";
+        btnAuthSwitch.textContent = "Create a new account now.";
+        loginView.style.display = "block";
+        registerView.style.display = "none";
+      }
+    }
+
+    btnAuthSwitch.addEventListener("click", (e) => {
+      e.preventDefault();
+      setView(currentMode === "login" ? "register" : "login");
+    });
+
+    // Handle URL parameter (e.g. index.html?mode=register)
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get("mode") === "register") {
+      setView("register");
+    } else if (urlParams.get("role") === "admin") {
+      setView("login");
+      switchToAdminPortal();
+    }
+
+    // Toggle Intern vs Admin Login tabs
+    function switchToInternPortal() {
+      activeLoginPortal = "intern";
+      tabInternLogin.classList.add("active");
+      tabAdminLogin.classList.remove("active");
+
+      labelIdentifier.textContent = "Intern ID";
+      inputIdentifier.placeholder = "e.g. SWDI-006";
+      inputIdentifier.style.textTransform = "uppercase";
+      inputIdentifier.type = "text";
+      inputIdentifier.value = "";
+      hintIdentifier.textContent = "Enter your assigned Intern ID (Format: SWDI-001, SWDI-002...)";
+      btnLoginSubmit.textContent = "Login Now";
+    }
+
+    function switchToAdminPortal() {
+      activeLoginPortal = "admin";
+      tabAdminLogin.classList.add("active");
+      tabInternLogin.classList.remove("active");
+
+      labelIdentifier.textContent = "Admin Email";
+      inputIdentifier.placeholder = "admin@swadrive.com";
+      inputIdentifier.style.textTransform = "none";
+      inputIdentifier.type = "email";
+      inputIdentifier.value = "";
+      hintIdentifier.textContent = "Sign in using your administrator email address";
+      btnLoginSubmit.textContent = "Login as Admin";
+    }
+
+    tabInternLogin.addEventListener("click", switchToInternPortal);
+    tabAdminLogin.addEventListener("click", switchToAdminPortal);
+
+    // Toggle Password Visibility
+    btnTogglePassword.addEventListener("click", () => {
+      const isPass = inputPassword.type === "password";
+      inputPassword.type = isPass ? "text" : "password";
+      btnTogglePassword.innerHTML = isPass
+        ? `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>`
+        : `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>`;
+    });
+
+    // Handle Login Submit
+    mainLoginForm.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const identifier = inputIdentifier.value.trim();
+      const password = inputPassword.value;
+
+      if (!identifier || !password) {
+        showToast("Please provide both credentials to sign in.", "warning");
+        return;
+      }
+
+      btnLoginSubmit.disabled = true;
+      btnLoginSubmit.textContent = "Signing In...";
+
+      try {
+        const res = await handleLogin(identifier, password, activeLoginPortal);
+        if (!res.success) {
+          btnLoginSubmit.disabled = false;
+          btnLoginSubmit.textContent = activeLoginPortal === "admin" ? "Login as Admin" : "Login Now";
         }
-        if (regBtn) {
-          regBtn.textContent = "My Profile";
-          regBtn.href = "profile.html";
+      } catch (err) {
+        btnLoginSubmit.disabled = false;
+        btnLoginSubmit.textContent = activeLoginPortal === "admin" ? "Login as Admin" : "Login Now";
+      }
+    });
+
+    // Handle Register Submit
+    mainRegisterForm.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const internId = regInputInternId.value.trim().toUpperCase();
+      const password = regInputPassword.value;
+      const confirmPassword = regInputConfirmPassword.value;
+
+      if (!internId) {
+        showToast("Please enter your Intern ID.", "warning");
+        return;
+      }
+
+      const idPattern = /^SWDI-\d{3,}$/i;
+      if (!idPattern.test(internId)) {
+        showToast("Intern ID must follow format SWDI-001, SWDI-002, etc.", "error");
+        return;
+      }
+
+      if (password !== confirmPassword) {
+        showToast("Passwords do not match.", "error");
+        return;
+      }
+
+      if (password.length < 6) {
+        showToast("Password must be at least 6 characters.", "error");
+        return;
+      }
+
+      btnRegisterSubmit.disabled = true;
+      btnRegisterSubmit.textContent = "Creating Account...";
+
+      try {
+        const res = await registerIntern(internId, password);
+        if (!res.success) {
+          btnRegisterSubmit.disabled = false;
+          btnRegisterSubmit.textContent = "Create Account Now";
         }
+      } catch (err) {
+        btnRegisterSubmit.disabled = false;
+        btnRegisterSubmit.textContent = "Create Account Now";
+      }
+    });
+
+    // Forgot Password Modal Handlers
+    btnOpenForgotModal.addEventListener("click", () => {
+      forgotModal.classList.add("show");
+      resetEmailInput.focus();
+    });
+
+    function closeForgot() {
+      forgotModal.classList.remove("show");
+    }
+
+    btnCloseForgotModal.addEventListener("click", closeForgot);
+    btnCancelForgot.addEventListener("click", closeForgot);
+
+    btnSendReset.addEventListener("click", async () => {
+      const email = resetEmailInput.value.trim();
+      if (!email) {
+        showToast("Please enter your email address.", "warning");
+        return;
+      }
+      btnSendReset.disabled = true;
+      btnSendReset.textContent = "Sending...";
+      const res = await handleResetPassword(email);
+      btnSendReset.disabled = false;
+      btnSendReset.textContent = "Send Reset Link";
+      if (res.success) {
+        closeForgot();
+        resetEmailInput.value = "";
       }
     });
   </script>
 </body>
 </html>
+
+
