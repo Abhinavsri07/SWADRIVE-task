@@ -246,8 +246,8 @@
               </div>
 
               <div class="form-group">
-                <label class="form-label" for="subGithub">GitHub / Repository URL *</label>
-                <input type="url" id="subGithub" class="form-input" style="width: 100%;" placeholder="https://github.com/username/project" required />
+                <label class="form-label" for="subGithub">GitHub / Repository URL</label>
+                <input type="text" id="subGithub" class="form-input" style="width: 100%;" placeholder="Optional - enter anything or leave blank" />
               </div>
 
               <div class="form-group">
@@ -438,7 +438,7 @@
 
         const ghLink = document.getElementById("submissionGithubLink");
         const ghContainer = document.getElementById("submissionGithubContainer");
-        const ghUrl = latest.githubLink || currentTask.submissionGithub;
+        const ghUrl = latest.githubUrl || latest.githubLink || currentTask.submissionGithub;
         if (ghUrl) {
           ghLink.href = ghUrl;
           ghContainer.style.display = "block";

@@ -211,11 +211,11 @@ export async function submitTaskWork(taskId, taskTitle, userProfile, { descripti
       updatedAt: new Date().toISOString()
     });
 
-    // Notify admins
-    const usersSnap = await getDocs(collection(db, "users"));
-    usersSnap.forEach(async (uDoc) => {
-      const u = uDoc.data();
-      if (u.role === "admin") {
+    // Notify admins (safeguarded)
+    try {
+      const qAdmins = query(collection(db, "users"), where("role", "==", "admin"));
+      const usersSnap = await getDocs(qAdmins);
+      usersSnap.forEach(async (uDoc) => {
         await createNotification(
           uDoc.id,
           "task_submitted",
@@ -223,8 +223,10 @@ export async function submitTaskWork(taskId, taskTitle, userProfile, { descripti
           `${userProfile.name || userProfile.email} submitted "${taskTitle}".`,
           `task-details.html?id=${taskId}`
         );
-      }
-    });
+      });
+    } catch (notifErr) {
+      console.warn("Could not send admin notification directly:", notifErr);
+    }
 
     showToast("Task submitted successfully! Awaiting Admin review.", "success");
     return { success: true, submissionId: subRef.id };
