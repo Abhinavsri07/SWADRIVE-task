@@ -41,12 +41,12 @@
             id="loginIdentifier" 
             class="form-input" 
             style="width: 100%; text-transform: uppercase;" 
-            placeholder="e.g. SWDI-006" 
+            placeholder="e.g. SWD-001 or SWDI-001" 
             required 
             autocomplete="username" 
           />
           <span id="identifierHint" style="display: block; font-size: 0.75rem; color: var(--color-slate-500); margin-top: 0.35rem;">
-            Enter your assigned Intern ID (Format: SWDI-001, SWDI-002, etc.)
+            Enter your assigned Intern ID (Format: SWD-001, SWDI-001, etc.)
           </span>
         </div>
 
@@ -129,10 +129,10 @@
       tabAdmin.style.boxShadow = "none";
 
       identifierLabel.textContent = "Intern ID";
-      identifierInput.placeholder = "e.g. SWDI-006";
+      identifierInput.placeholder = "e.g. SWD-001";
       identifierInput.style.textTransform = "uppercase";
       identifierInput.value = "";
-      identifierHint.textContent = "Enter your assigned Intern ID (Format: SWDI-001, SWDI-002, etc.)";
+      identifierHint.textContent = "Enter your assigned Intern ID (Format: SWD-001, SWDI-001, etc.)";
       submitBtn.textContent = "Sign In as Intern";
       registerLinkContainer.style.display = "block";
     });

@@ -87,6 +87,8 @@ export function initAuthGuard(allowedRoles = []) {
                 window.location.replace("member.html");
               }
             }
+          }, (err) => {
+            console.warn("User role realtime listener warning:", err.message);
           });
 
           updateUIForUser(currentUserProfile);
@@ -181,10 +183,10 @@ export async function registerIntern(internId, password) {
   try {
     const cleanInternId = internId.trim().toUpperCase();
 
-    // Format validation: SWDI-001, SWDI-002, etc.
-    const pattern = /^SWDI-\d{3,}$/i;
+    // Format validation: SWD-001, SWDI-001, etc.
+    const pattern = /^(SWD|SWDI)-\d{3,}$/i;
     if (!pattern.test(cleanInternId)) {
-      showToast("Intern ID must follow format SWDI-001, SWDI-002, etc.", "error");
+      showToast("Intern ID must follow format SWD-001, SWDI-001, etc.", "error");
       return { success: false, error: "Invalid Intern ID format" };
     }
 
@@ -267,9 +269,9 @@ export async function handleLogin(identifier, password, portalMode = "intern") {
 
     if (portalMode === "intern") {
       cleanInternId = identifier.trim().toUpperCase();
-      const pattern = /^SWDI-\d{3,}$/i;
+      const pattern = /^(SWD|SWDI)-\d{3,}$/i;
       if (!pattern.test(cleanInternId)) {
-        showToast("Intern ID must follow format SWDI-001, SWDI-002, etc.", "error");
+        showToast("Intern ID must follow format SWD-001, SWDI-001, etc.", "error");
         return { success: false, error: "Invalid Intern ID format" };
       }
       emailToUse = getInternalEmailForIntern(cleanInternId);

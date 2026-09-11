@@ -30,13 +30,13 @@
             id="regInternId" 
             class="form-input" 
             style="width: 100%; text-transform: uppercase; font-family: monospace; font-weight: 600;" 
-            placeholder="e.g. SWDI-006" 
+            placeholder="e.g. SWD-001 or SWDI-001" 
             required 
-            pattern="^SWDI-\d{3,}$"
-            title="Format must be SWDI-001, SWDI-002, etc."
+            pattern="^(SWD|SWDI)-\d{3,}$"
+            title="Format must be SWD-001, SWDI-001, etc."
             autocomplete="off" 
           />
-          <p class="form-help">Format: SWDI-001, SWDI-002, etc. (Assigned by Organization)</p>
+          <p class="form-help">Format: SWD-001, SWDI-001, etc. (Assigned by Organization)</p>
         </div>
 
         <div class="form-group">
@@ -99,10 +99,10 @@
 
       const internId = rawInternId.trim().toUpperCase();
 
-      // Format validation: SWDI-001, SWDI-002, etc.
-      const idPattern = /^SWDI-\d{3,}$/i;
+      // Format validation: SWD-001, SWDI-001, etc.
+      const idPattern = /^(SWD|SWDI)-\d{3,}$/i;
       if (!idPattern.test(internId)) {
-        showToast("Intern ID must follow format SWDI-001, SWDI-002, etc.", "error");
+        showToast("Intern ID must follow format SWD-001, SWDI-001, etc.", "error");
         return;
       }
 

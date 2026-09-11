@@ -17,6 +17,7 @@ import {
 } from "firebase/auth";
 import { 
   getFirestore, 
+  initializeFirestore,
   collection, 
   doc, 
   setDoc, 
@@ -80,15 +81,19 @@ try {
   app = !getApps().length ? initializeApp(firebaseConfig) : getApp();
   auth = getAuth(app);
   
-  if (firebaseConfig.firestoreDatabaseId && firebaseConfig.firestoreDatabaseId !== "(default)") {
-    try {
-      db = getFirestore(app, firebaseConfig.firestoreDatabaseId);
-    } catch (e) {
-      console.warn("Falling back to default database instance:", e);
-      db = getFirestore(app);
-    }
-  } else {
-    db = getFirestore(app);
+  const targetDbId = (firebaseConfig.firestoreDatabaseId && firebaseConfig.firestoreDatabaseId !== "(default)")
+    ? firebaseConfig.firestoreDatabaseId
+    : undefined;
+
+  const firestoreSettings = {
+    experimentalForceLongPolling: true
+  };
+
+  try {
+    db = initializeFirestore(app, firestoreSettings, targetDbId);
+  } catch (initErr) {
+    console.warn("Using getFirestore fallback instance:", initErr);
+    db = targetDbId ? getFirestore(app, targetDbId) : getFirestore(app);
   }
 
   storage = getStorage(app);

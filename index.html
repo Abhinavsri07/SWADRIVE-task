@@ -377,7 +377,7 @@
       </div>
 
       <div class="left-footer">
-        &copy; 2026 Swadrive. All rights reserved.
+        &copy; 2026 Swadrive@abhi9. All rights reserved.
       </div>
     </div>
 
@@ -415,11 +415,11 @@
                 id="inputIdentifier" 
                 class="custom-input" 
                 style="text-transform: uppercase;" 
-                placeholder="e.g. SWDI-006" 
+                placeholder="e.g. SWD-001 or SWDI-001" 
                 required 
                 autocomplete="username" 
               />
-              <span id="hintIdentifier" class="field-hint">Enter your assigned Intern ID (Format: SWDI-001, SWDI-002...)</span>
+              <span id="hintIdentifier" class="field-hint">Enter your assigned Intern ID (Format: SWD-001, SWDI-001...)</span>
             </div>
 
             <!-- Password Field -->
@@ -466,13 +466,13 @@
                 id="regInputInternId" 
                 class="custom-input" 
                 style="text-transform: uppercase; font-family: monospace; font-weight: 600;" 
-                placeholder="e.g. SWDI-006" 
+                placeholder="e.g. SWD-001 or SWDI-001" 
                 required 
-                pattern="^SWDI-\d{3,}$"
-                title="Format must be SWDI-001, SWDI-002, etc."
+                pattern="^(SWD|SWDI)-\d{3,}$"
+                title="Format must be SWD-001, SWDI-001, etc."
                 autocomplete="off" 
               />
-              <span class="field-hint">Assigned format: SWDI-001, SWDI-002, etc.</span>
+              <span class="field-hint">Assigned format: SWD-001, SWDI-001, etc.</span>
             </div>
 
             <div class="input-group">
@@ -618,11 +618,11 @@
       tabAdminLogin.classList.remove("active");
 
       labelIdentifier.textContent = "Intern ID";
-      inputIdentifier.placeholder = "e.g. SWDI-006";
+      inputIdentifier.placeholder = "e.g. SWD-001";
       inputIdentifier.style.textTransform = "uppercase";
       inputIdentifier.type = "text";
       inputIdentifier.value = "";
-      hintIdentifier.textContent = "Enter your assigned Intern ID (Format: SWDI-001, SWDI-002...)";
+      hintIdentifier.textContent = "Enter your assigned Intern ID (Format: SWD-001, SWDI-001...)";
       btnLoginSubmit.textContent = "Login Now";
     }
 
@@ -690,9 +690,9 @@
         return;
       }
 
-      const idPattern = /^SWDI-\d{3,}$/i;
+      const idPattern = /^(SWD|SWDI)-\d{3,}$/i;
       if (!idPattern.test(internId)) {
-        showToast("Intern ID must follow format SWDI-001, SWDI-002, etc.", "error");
+        showToast("Intern ID must follow format SWD-001, SWDI-001, etc.", "error");
         return;
       }
 
